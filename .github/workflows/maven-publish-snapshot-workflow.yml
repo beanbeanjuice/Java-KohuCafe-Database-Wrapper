@@ -1,0 +1,36 @@
+name: Publish Snapshot CI
+
+on:
+  pull_request:
+    branches:
+    - integration
+    - master
+
+# https://stackoverflow.com/questions/61096521/how-to-use-gpg-key-in-github-actions
+# https://github.com/actions/setup-java/issues/83
+# FIX - https://stackoverflow.com/questions/53992950/maven-gpg-plugin-failing-with-inappropriate-ioctl-for-device-when-running-unde
+# https://keys.openpgp.org
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Fix GPG
+        run: export GPG_TTY=$(tty)
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v3
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+          cache: maven
+          server-id: ossrh
+          server-username: OSSRH_USERNAME
+          server-password: OSSRH_TOKEN
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}  # Value of the GPG private key to import
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE  # env variable for GPG private key passphrase
+      - name: Test and Publish Package to Apache Maven Central
+        run: mvn clean deploy
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
