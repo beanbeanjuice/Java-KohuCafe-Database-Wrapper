@@ -17,7 +17,7 @@ public class TestSQLConnection {
     @DisplayName("Test Connection")
     public void testConnection() {
         SQLConnection connection = new SQLConnection(MYSQL_URL, MYSQL_PORT, MYSQL_SCHEMA, MYSQL_USERNAME, MYSQL_PASSWORD);
-        Assertions.assertTrue(connection.start());
+        Assertions.assertTrue(connection.connect());
     }
 
 }
