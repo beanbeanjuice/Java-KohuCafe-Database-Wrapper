@@ -30,10 +30,10 @@ jobs:
       with:
         envkey_DEBUG: false
         MYSQL_URL: ${{ secrets.MYSQL_URL }}
-        MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
-        MYSQL_SCHEMA: ${{ secrets.MYSQL_SCHEMA }}
-        MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-        MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        # MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+        # MYSQL_SCHEMA: ${{ secrets.MYSQL_SCHEMA }}
+        # MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+        # MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
         file_name: .env
         fail_on_empty: true
 
