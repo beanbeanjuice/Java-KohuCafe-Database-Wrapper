@@ -1,8 +1,8 @@
 package com.beanbeanjuice;
 
+import com.beanbeanjuice.tables.ranks.RankHandler;
 import com.beanbeanjuice.utility.sql.SQLConnection;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * A class used for the {@link java.sql.Connection connection} to the MySQL database.
@@ -57,7 +57,7 @@ public class KohuCafeDatabaseConnection {
         public String getSchema() { return SCHEMA; }
     }
 
-    private final SQLConnection connection;  // TODO: Possible remove as final.
+    public RankHandler RANKS;
 
     /**
      * Creates a new {@link KohuCafeDatabaseConnection}.
@@ -66,16 +66,9 @@ public class KohuCafeDatabaseConnection {
      * @param type The {@link TYPE type} of connection to be used.
      */
     public KohuCafeDatabaseConnection(@NotNull String username, @NotNull String password, @NotNull TYPE type) {
-        connection = new SQLConnection(type.getURL(), type.getPort(), type.getSchema(), username, password);
-        connection.connect();
-    }
+        SQLConnection connection = new SQLConnection(type.getURL(), type.getPort(), type.getSchema(), username, password);
 
-    /**
-     * @return The current {@link SQLConnection}.
-     */
-    @Nullable
-    public SQLConnection getConnection() {
-        return connection;
+        RANKS = new RankHandler(connection);
     }
 
 }

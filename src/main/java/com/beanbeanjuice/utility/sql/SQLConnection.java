@@ -4,9 +4,9 @@ import com.beanbeanjuice.utility.exception.NotConnectedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A class used for connecting to a MySQL database.
@@ -39,21 +39,58 @@ public class SQLConnection {
         this.PASSWORD = password;
     }
 
-    // TODO: May have to make this a runnable.
     /**
      * Starts the {@link Connection MySQL Connection}.
-     * @return True, if it was successfully started.
      */
+    private void connect() throws SQLException {
+        connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+    }
+
     @NotNull
-    public Boolean connect() {
-        if (connection != null)  // Already connected.
-            return false;
+    public SQLResult runStatement(@NotNull String query) {
+        return runPreparedStatement(query, null);
+    }
+
+    @NotNull
+    public SQLResult runPreparedStatement(@NotNull String query, @Nullable ArrayList<String> args) {
 
         try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            return true;
+            connect();
         } catch (SQLException e) {
-            return false;
+            throw new NotConnectedException("Failed to connect to the database.");
+        }
+
+        PreparedStatement statement = null;
+        ResultSet results = null;
+
+        try {
+            statement = connection.prepareStatement(query);
+
+            for (int i = 1; args != null && i < args.size(); i++)
+                statement.setString(i, args.get(i));
+
+            results = statement.executeQuery();
+
+            return new SQLResult(results);
+
+        } catch (SQLException e) {
+            return new SQLResult(null);
+        } finally {
+
+            try {
+                if (results != null)
+                    results.close();
+            } catch (SQLException ignored) { }
+
+            try {
+                if (statement != null)
+                    statement.close();
+            } catch (SQLException ignored) { }
+
+            try {
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException ignored) { }
         }
     }
 
