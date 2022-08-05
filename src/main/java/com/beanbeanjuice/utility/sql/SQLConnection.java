@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * A class used for connecting to a MySQL database.
@@ -51,6 +50,12 @@ public class SQLConnection {
         return runPreparedStatement(query, null);
     }
 
+    /**
+     * Run a {@link PreparedStatement} query on the {@link Connection MySQL connection}.
+     * @param query The {@link String query} to run.
+     * @param args The {@link ArrayList<String> arguments} to use.
+     * @return The finalised {@link SQLResult result}.
+     */
     @NotNull
     public SQLResult runPreparedStatement(@NotNull String query, @Nullable ArrayList<String> args) {
 
@@ -70,12 +75,11 @@ public class SQLConnection {
                 statement.setString(i, args.get(i));
 
             results = statement.executeQuery();
-
             return new SQLResult(results);
 
         } catch (SQLException e) {
             return new SQLResult(null);
-        } finally {
+        } finally {  // Closes all the connections.
 
             try {
                 if (results != null)

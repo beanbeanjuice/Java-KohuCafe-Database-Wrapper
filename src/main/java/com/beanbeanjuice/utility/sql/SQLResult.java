@@ -9,10 +9,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+/**
+ * A class containing the result from a MySQL query.
+ *
+ * @author beanbeanjuice
+ * @since 1.0.0
+ */
 public class SQLResult implements Iterable<SQLRow> {
 
     private ArrayList<SQLRow> table = new ArrayList<>();
 
+    /**
+     * Create a new {@link SQLResult}.
+     * @param results The {@link ResultSet} from a corresponding {@link java.sql.Connection connection} query.
+     */
     public SQLResult(@Nullable ResultSet results) {
 
         if (results == null)
@@ -31,6 +41,10 @@ public class SQLResult implements Iterable<SQLRow> {
         } catch (SQLException ignored) { }
     }
 
+    /**
+     * A custom {@link Iterator} used for enhanced for loops.
+     * @return The {@link Iterable<SQLRow>}.
+     */
     @NotNull
     @Override
     public Iterator<SQLRow> iterator() {

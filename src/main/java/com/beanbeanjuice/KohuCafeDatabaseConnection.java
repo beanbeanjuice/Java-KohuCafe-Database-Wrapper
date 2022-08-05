@@ -1,6 +1,7 @@
 package com.beanbeanjuice;
 
 import com.beanbeanjuice.tables.ranks.RankHandler;
+import com.beanbeanjuice.tables.users.UserHandler;
 import com.beanbeanjuice.utility.sql.SQLConnection;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,6 +59,7 @@ public class KohuCafeDatabaseConnection {
     }
 
     public RankHandler RANKS;
+    public UserHandler USERS;
 
     /**
      * Creates a new {@link KohuCafeDatabaseConnection}.
@@ -69,6 +71,7 @@ public class KohuCafeDatabaseConnection {
         SQLConnection connection = new SQLConnection(type.getURL(), type.getPort(), type.getSchema(), username, password);
 
         RANKS = new RankHandler(connection);
+        USERS = new UserHandler(this, connection);
     }
 
 }
