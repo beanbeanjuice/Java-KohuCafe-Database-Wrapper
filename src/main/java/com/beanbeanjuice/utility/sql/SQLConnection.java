@@ -1,6 +1,7 @@
 package com.beanbeanjuice.utility.sql;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -32,7 +33,7 @@ public class SQLConnection {
         }
     }
 
-    @NotNull
+    @Nullable
     public Connection getConnection() {
         return connection;
     }
