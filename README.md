@@ -1,0 +1,1 @@
+[![wakatime](https://wakatime.com/badge/github/beanbeanjuice/Java-KohuCafe-Database-Wrapper.svg)](https://wakatime.com/badge/github/beanbeanjuice/Java-KohuCafe-Database-Wrapper)
