@@ -46,8 +46,52 @@ public class SQLConnection {
     }
 
     @NotNull
-    public SQLResult runStatement(@NotNull String query) {
-        return runPreparedStatement(query, null);
+    public Boolean executeQuery(@NotNull String query) {
+        return executeQuery(query, null);
+    }
+
+    @NotNull
+    public SQLResult getResultSet(@NotNull String query) {
+        return getResultSet(query, null);
+    }
+
+    @NotNull
+    public Boolean executeQuery(@NotNull String query, @Nullable String[] args) {
+
+        try {
+            connect();
+        } catch (SQLException e) {
+            throw new NotConnectedException("Failed to connect to the database.");
+        }
+
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(query);
+
+            for (int i = 1; args != null && i <= args.length; i++)
+                statement.setString(i, args[i-1]);
+
+            statement.execute();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {  // Closes all the connections.
+
+            try {
+                if (statement != null)
+                    statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException ignored) { }
+        }
     }
 
     /**
@@ -57,7 +101,7 @@ public class SQLConnection {
      * @return The finalised {@link SQLResult result}.
      */
     @NotNull
-    public SQLResult runPreparedStatement(@NotNull String query, @Nullable ArrayList<String> args) {
+    public SQLResult getResultSet(@NotNull String query, @Nullable String[] args) {
 
         try {
             connect();
@@ -71,14 +115,14 @@ public class SQLConnection {
         try {
             statement = connection.prepareStatement(query);
 
-            for (int i = 1; args != null && i < args.size(); i++)
-                statement.setString(i, args.get(i));
+            for (int i = 1; args != null && i <= args.length; i++)
+                statement.setString(i, args[i-1]);
 
             results = statement.executeQuery();
             return new SQLResult(results);
 
         } catch (SQLException e) {
-            return new SQLResult(null);
+            return new SQLResult(null, false);
         } finally {  // Closes all the connections.
 
             try {

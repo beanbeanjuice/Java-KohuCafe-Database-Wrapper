@@ -23,15 +23,6 @@ public class SQLRow {
         this.column = column;
     }
 
-    @SuppressWarnings("unchecked")
-    @Nullable
-    private <T> T getObject(@NotNull String columnName) {
-        if (!column.containsKey(columnName))
-            return null;
-
-        return (T) column.get(columnName);
-    }
-
     /**
      * Get the value as a {@link String}.
      * @param columnName The {@link String name} of the column.
@@ -51,8 +42,15 @@ public class SQLRow {
      * @return The {@link Integer value} of the map.
      */
     @Nullable
-    public Integer getAsInt(@NotNull String columnName) {
-        return getObject(columnName);
+    public Integer getAsInteger(@NotNull String columnName) {
+        if (!column.containsKey(columnName))
+            return null;
+
+        try {
+            return Integer.parseInt(getAsString(columnName));
+        } catch (NumberFormatException | NullPointerException e) {
+            return null;
+        }
     }
 
     /**
@@ -62,7 +60,31 @@ public class SQLRow {
      */
     @Nullable
     public Double getAsDouble(@NotNull String columnName) {
-        return getObject(columnName);
+        if (!column.containsKey(columnName))
+            return null;
+
+        try {
+            return Double.parseDouble(getAsString(columnName));
+        } catch (NumberFormatException | NullPointerException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Get the value as a {@link Boolean}.
+     * @param columnName The {@link String name} of the column.
+     * @return The {@link Double value} of the map.
+     */
+    @Nullable
+    public Boolean getAsBoolean(@NotNull String columnName) {
+        if (!column.containsKey(columnName))
+            return null;
+
+        try {
+            return getAsString(columnName).equalsIgnoreCase("1");
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
 }

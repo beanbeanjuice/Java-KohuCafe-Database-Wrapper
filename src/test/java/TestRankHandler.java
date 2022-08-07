@@ -14,9 +14,27 @@ public class TestRankHandler {
     @DisplayName("Test Rank Handler")
     public void testRankHandler() {
         KohuCafeDatabaseConnection kohuCafeDatabaseConnection = new KohuCafeDatabaseConnection(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeDatabaseConnection.TYPE.BETA);
-        Assertions.assertNotNull(kohuCafeDatabaseConnection.RANKS.getUserRanks("690927484199370753"));
-        Assertions.assertEquals("Programmer", kohuCafeDatabaseConnection.RANKS.getUserRanks("690927484199370753").get(0).getName());
-        Assertions.assertEquals("A rank given to programmers on the server.", kohuCafeDatabaseConnection.RANKS.getUserRanks("690927484199370753").get(0).getDescription());
+        Assertions.assertNotNull(kohuCafeDatabaseConnection.USER_RANKS.getUserRanks("690927484199370753"));
+        int currentID = kohuCafeDatabaseConnection.RANKS.getRanks().size() + 1;
+        String roleID = String.valueOf(currentID + 500);
+
+        Assertions.assertTrue(kohuCafeDatabaseConnection.RANKS.addRank(roleID, "For Testing", "For testing purposes."));
+
+        Assertions.assertNotNull(kohuCafeDatabaseConnection.RANKS.getRank(currentID));
+        Assertions.assertEquals(roleID, kohuCafeDatabaseConnection.RANKS.getRank(currentID).getRoleID());
+        Assertions.assertEquals("For Testing", kohuCafeDatabaseConnection.RANKS.getRank(currentID).getName());
+        Assertions.assertEquals("For testing purposes.", kohuCafeDatabaseConnection.RANKS.getRank(currentID).getDescription());
+
+        String newRoleID = String.valueOf(currentID + 499);
+
+        Assertions.assertTrue(kohuCafeDatabaseConnection.RANKS.setRoleID(currentID, newRoleID));
+        Assertions.assertEquals(newRoleID, kohuCafeDatabaseConnection.RANKS.getRank(currentID).getRoleID());
+
+        Assertions.assertTrue(kohuCafeDatabaseConnection.RANKS.setName(currentID, "For Not Testing"));
+        Assertions.assertEquals("For Not Testing", kohuCafeDatabaseConnection.RANKS.getRank(currentID).getName());
+
+        Assertions.assertTrue(kohuCafeDatabaseConnection.RANKS.setDescription(currentID, "For not testing purposes."));
+        Assertions.assertEquals("For not testing purposes.", kohuCafeDatabaseConnection.RANKS.getRank(currentID).getDescription());
     }
 
 }

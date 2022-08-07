@@ -1,9 +1,13 @@
 package com.beanbeanjuice;
 
 import com.beanbeanjuice.tables.ranks.RankHandler;
+import com.beanbeanjuice.tables.ranks.UserRankHandler;
 import com.beanbeanjuice.tables.users.UserHandler;
+import com.beanbeanjuice.tables.warns.WarnHandler;
 import com.beanbeanjuice.utility.sql.SQLConnection;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.TimeZone;
 
 /**
  * A class used for the {@link java.sql.Connection connection} to the MySQL database.
@@ -59,6 +63,8 @@ public class KohuCafeDatabaseConnection {
     }
 
     public RankHandler RANKS;
+    public UserRankHandler USER_RANKS;
+    public WarnHandler WARNS;
     public UserHandler USERS;
 
     /**
@@ -68,9 +74,12 @@ public class KohuCafeDatabaseConnection {
      * @param type The {@link TYPE type} of connection to be used.
      */
     public KohuCafeDatabaseConnection(@NotNull String username, @NotNull String password, @NotNull TYPE type) {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         SQLConnection connection = new SQLConnection(type.getURL(), type.getPort(), type.getSchema(), username, password);
 
         RANKS = new RankHandler(connection);
+        WARNS = new WarnHandler(connection);
+        USER_RANKS = new UserRankHandler(this, connection);
         USERS = new UserHandler(this, connection);
     }
 

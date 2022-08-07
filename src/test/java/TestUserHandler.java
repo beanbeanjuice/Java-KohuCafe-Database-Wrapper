@@ -15,8 +15,8 @@ public class TestUserHandler {
     public void testUserHandler() {
         KohuCafeDatabaseConnection kohuCafeDatabaseConnection = new KohuCafeDatabaseConnection(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeDatabaseConnection.TYPE.BETA);
         Assertions.assertNotNull(kohuCafeDatabaseConnection.USERS.getUser("690927484199370753"));
-        Assertions.assertEquals(2.0, kohuCafeDatabaseConnection.USERS.getUser("690927484199370753").getMultiplier());
-        Assertions.assertEquals(1000.0, kohuCafeDatabaseConnection.USERS.getUser("690927484199370753").getBalance());
+        Assertions.assertEquals(1.5, kohuCafeDatabaseConnection.USERS.getUser("690927484199370753").getMultiplier());
+        Assertions.assertEquals(5000.0, kohuCafeDatabaseConnection.USERS.getUser("690927484199370753").getBalance());
         Assertions.assertEquals("Programmer", kohuCafeDatabaseConnection.USERS.getUser("690927484199370753").getRanks().get(0).getName());
     }
 
