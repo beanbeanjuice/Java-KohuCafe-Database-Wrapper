@@ -72,4 +72,12 @@ public class UserRankHandler {
         return ranks;
     }
 
+    /**
+     * @return A {@link HashMap} containing {@link String user ID keys} and a value of {@link ArrayList} of {@link Integer rank IDs}.
+     */
+    @NotNull
+    public HashMap<String, ArrayList<Integer>> getUserRanksMap() {
+        return userRanks;
+    }
+
 }

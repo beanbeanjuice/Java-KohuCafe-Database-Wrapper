@@ -74,8 +74,6 @@ public class User {
 
     protected void addRank(@NotNull Rank rank) {
         ranks.add(rank);
-        // TODO: Logic to check if already contains rank.
-        // TODO: Update in database/cache.
     }
 
     /**
@@ -93,8 +91,6 @@ public class User {
 
     protected void removeRank(@NotNull Rank rank) {
         ranks.remove(rank);
-        // TODO: Logic to check if already contains rank.
-        // TODO: Update in database/cache.
     }
 
 
