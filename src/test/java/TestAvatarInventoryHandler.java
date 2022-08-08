@@ -24,9 +24,9 @@ public class TestAvatarInventoryHandler {
         Assertions.assertTrue(() -> kohuCafeDatabaseConnection.AVATARS.getAvatarItems("690927484199370753").size() >= 1);
 
         int id = 2;
-        String name = "";
-        String description = "";
-        String imageURL = "";
+        String name = "Test Item #2";
+        String description = "Description for Test Item #2";
+        String imageURL = "https://cdn.pixabay.com/photo/2014/06/03/19/38/road-sign-361514_960_720.png";
         int total = 1;
         double weight = 0;
         double damage = 0;
@@ -62,7 +62,7 @@ public class TestAvatarInventoryHandler {
 
         Assertions.assertTrue(kohuCafeDatabaseConnection.AVATARS.removeItem("690927484199370753", 2));
         Assertions.assertNull(kohuCafeDatabaseConnection.AVATARS.getAvatarItem("690927484199370753", 2));
-
+        Assertions.assertFalse(kohuCafeDatabaseConnection.AVATARS.giveItem("690927484199370753", 3));
     }
 
 }

@@ -11,12 +11,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A class used for {@link AvatarItem} handling.
+ *
+ * @author beanbeanjuice
+ * @since 1.0.0
+ */
 public class AvatarInventoryHandler {
 
     private HashMap<String, ArrayList<AvatarItem>> userItems = new HashMap<>();
     private KohuCafeDatabaseConnection api;
     private SQLConnection connection;
 
+    /**
+     * Creates a new {@link AvatarInventoryHandler}.
+     * @param api The {@link KohuCafeDatabaseConnection api connection} to the database.
+     * @param connection The {@link SQLConnection connection} to the database.
+     */
     public AvatarInventoryHandler(@NotNull KohuCafeDatabaseConnection api, @NotNull SQLConnection connection) {
         this.api = api;
         this.connection = connection;
@@ -37,6 +48,11 @@ public class AvatarInventoryHandler {
         }
     }
 
+    /**
+     * Get all of the {@link AvatarItem items} for a specified user.
+     * @param userID The {@link String user ID} specified.
+     * @return The {@link ArrayList} of {@link AvatarItem items} for that user.
+     */
     @NotNull
     public ArrayList<AvatarItem> getAvatarItems(@NotNull String userID) {
         if (!userItems.containsKey(userID))
@@ -45,6 +61,12 @@ public class AvatarInventoryHandler {
         return userItems.get(userID);
     }
 
+    /**
+     * Get a specific {@link AvatarItem item} for a specified user.
+     * @param userID The {@link String user ID} for specified.
+     * @param itemID The {@link Integer item ID} specified.
+     * @return The {@link AvatarItem item} for that user.
+     */
     @Nullable
     public AvatarItem getAvatarItem(@NotNull String userID, @NotNull Integer itemID) {
         if (!userItems.containsKey(userID))
@@ -56,6 +78,13 @@ public class AvatarInventoryHandler {
         return null;
     }
 
+    /**
+     * Give an {@link AvatarItem} to a user.
+     * @param userID The {@link String user ID} for that user.
+     * @param itemID The {@link Integer item ID} specified.
+     * @return True, if the {@link AvatarItem item} was given successfully.
+     * @throws AvatarItemDoesNotExistException Thrown if the {@link AvatarItem item} does not exist.
+     */
     @NotNull
     public Boolean giveItem(@NotNull String userID, @NotNull Integer itemID) throws AvatarItemDoesNotExistException {
         // Check if item exists.
@@ -81,6 +110,13 @@ public class AvatarInventoryHandler {
         return false;
     }
 
+    /**
+     * Remove an {@link AvatarItem item} from a specified user.
+     * @param userID The {@link String user ID} specified.
+     * @param itemID The {@link Integer item ID} specified.
+     * @return True, if the {@link AvatarItem item} was removed successfully.
+     * @throws AvatarItemDoesNotExistException Thrown if the {@link AvatarItem item} does not exist.
+     */
     @NotNull
     public Boolean removeItem(@NotNull String userID, @NotNull Integer itemID) throws AvatarItemDoesNotExistException {
         // Check if item exists.
@@ -102,6 +138,12 @@ public class AvatarInventoryHandler {
         return false;
     }
 
+    /**
+     * Check if a user has an {@link AvatarItem item}.
+     * @param userID The {@link String user ID} to check.
+     * @param itemID The {@link Integer item ID}.
+     * @return True, if the user has the {@link AvatarItem item}.
+     */
     @NotNull
     public Boolean hasItem(@NotNull String userID, @NotNull Integer itemID) {
         if (!userItems.containsKey(userID))
@@ -113,6 +155,11 @@ public class AvatarInventoryHandler {
         return false;
     }
 
+    /**
+     * Count the amount of instances of a specified {@link AvatarItem item}.
+     * @param itemID The {@link Integer item ID} specified.
+     * @return The {@link Integer amount} of instances of that {@link AvatarItem item}.
+     */
     @NotNull
     public Integer countItems(@NotNull Integer itemID) {
         int num = 0;
