@@ -1,6 +1,5 @@
 package com.beanbeanjuice.tables.avatar;
 
-import com.beanbeanjuice.tables.ranks.RankHandler;
 import com.beanbeanjuice.utility.exception.item.AvatarItemDoesNotExistException;
 import com.beanbeanjuice.utility.sql.SQLConnection;
 import com.beanbeanjuice.utility.sql.SQLRow;
@@ -13,10 +12,6 @@ public class AvatarItemHandler {
     private ArrayList<AvatarItem> items = new ArrayList<>();
     private SQLConnection connection;
 
-    /**
-     * Creates a new {@link RankHandler} object.
-     * @param connection The {@link SQLConnection connection} to the database.
-     */
     public AvatarItemHandler(@NotNull SQLConnection connection) {
         this.connection = connection;
         cache();
@@ -52,6 +47,12 @@ public class AvatarItemHandler {
             throw new AvatarItemDoesNotExistException(id);
 
         return items.get(arrayIndex);
+    }
+
+    @NotNull
+    public Boolean checkIfItemExists(@NotNull Integer id) {
+        int arrayIndex = id - 1;
+        return arrayIndex >= 0 && arrayIndex < items.size();
     }
 
     @NotNull

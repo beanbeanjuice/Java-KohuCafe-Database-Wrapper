@@ -1,5 +1,6 @@
 package com.beanbeanjuice;
 
+import com.beanbeanjuice.tables.avatar.AvatarInventoryHandler;
 import com.beanbeanjuice.tables.avatar.AvatarItemHandler;
 import com.beanbeanjuice.tables.ranks.RankHandler;
 import com.beanbeanjuice.tables.ranks.UserRankHandler;
@@ -65,8 +66,9 @@ public class KohuCafeDatabaseConnection {
 
     public AvatarItemHandler AVATAR_ITEMS;
     public RankHandler RANKS;
-    public UserRankHandler USER_RANKS;
     public WarnHandler WARNS;
+    public AvatarInventoryHandler AVATARS;
+    public UserRankHandler USER_RANKS;
     public UserHandler USERS;
 
     /**
@@ -82,6 +84,7 @@ public class KohuCafeDatabaseConnection {
         AVATAR_ITEMS = new AvatarItemHandler(connection);
         RANKS = new RankHandler(connection);
         WARNS = new WarnHandler(connection);
+        AVATARS = new AvatarInventoryHandler(this, connection);
         USER_RANKS = new UserRankHandler(this, connection);
         USERS = new UserHandler(this, connection);
     }
