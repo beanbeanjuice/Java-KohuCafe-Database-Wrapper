@@ -1,7 +1,6 @@
 package com.beanbeanjuice.utility.sql;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
@@ -24,67 +23,61 @@ public class SQLRow {
     }
 
     /**
-     * Get the value as a {@link String}.
-     * @param columnName The {@link String name} of the column.
-     * @return The {@link String value} of the map.
+     * Return a {@link String} from the {@link SQLRow}.
+     * @param columnName The {@link String name} of the column to get.
+     * @return The {@link String value} in the column.
+     * @throws NullPointerException Thrown if the column does not exist.
      */
-    @Nullable
-    public String getAsString(@NotNull String columnName) {
+    @NotNull
+    public String getAsString(@NotNull String columnName) throws NullPointerException {
         if (!column.containsKey(columnName))
-            return null;
+            throw new NullPointerException("Column Name (" + columnName + ") does not exist.");
 
         return String.valueOf(column.get(columnName));
     }
 
     /**
-     * Get the value as a {@link Integer}.
-     * @param columnName The {@link String name} of the column.
-     * @return The {@link Integer value} of the map.
+     * Return an {@link Integer} from the {@link SQLRow}.
+     * @param columnName The {@link String name} of the column to get.
+     * @return The {@link Integer value} in the column.
+     * @throws NullPointerException Thrown if the column does not exist.
+     * @throws NumberFormatException Thrown if the expected value is not an {@link Integer}.
      */
-    @Nullable
-    public Integer getAsInteger(@NotNull String columnName) {
+    @NotNull
+    public Integer getAsInteger(@NotNull String columnName) throws NullPointerException, NumberFormatException {
         if (!column.containsKey(columnName))
-            return null;
+            throw new NullPointerException("Column Name (" + columnName + ") does not exist.");
 
-        try {
-            return Integer.parseInt(getAsString(columnName));
-        } catch (NumberFormatException | NullPointerException e) {
-            return null;
-        }
+        return Integer.parseInt(getAsString(columnName));
     }
 
     /**
-     * Get the value as a {@link Double}.
-     * @param columnName The {@link String name} of the column.
-     * @return The {@link Double value} of the map.
+     * Return a {@link Double} from the {@link SQLRow}.
+     * @param columnName The {@link String name} of the column to get.
+     * @return The {@link Integer value} in the column.
+     * @throws NullPointerException Thrown if the column does not exist.
+     * @throws NumberFormatException Thrown if the expected value is not a {@link Double}.
      */
-    @Nullable
-    public Double getAsDouble(@NotNull String columnName) {
+    @NotNull
+    public Double getAsDouble(@NotNull String columnName) throws NullPointerException, NumberFormatException {
         if (!column.containsKey(columnName))
-            return null;
+            throw new NullPointerException("Column Name (" + columnName + ") does not exist.");
 
-        try {
-            return Double.parseDouble(getAsString(columnName));
-        } catch (NumberFormatException | NullPointerException e) {
-            return null;
-        }
+        return Double.parseDouble(getAsString(columnName));
     }
 
     /**
-     * Get the value as a {@link Boolean}.
-     * @param columnName The {@link String name} of the column.
-     * @return The {@link Double value} of the map.
+     * Return a {@link Boolean} from the {@link SQLRow}.
+     * @param columnName The {@link String name} of the column to get.
+     * @return  The {@link Boolean value} in the column.
+     * @throws NullPointerException Thrown if the column does not exist.
      */
-    @Nullable
-    public Boolean getAsBoolean(@NotNull String columnName) {
+    @NotNull
+    public Boolean getAsBoolean(@NotNull String columnName) throws NullPointerException {
         if (!column.containsKey(columnName))
-            return null;
+            throw new NullPointerException("Column Name (" + columnName + ") does not exist.");
 
-        try {
-            return getAsString(columnName).equalsIgnoreCase("1");
-        } catch (NullPointerException e) {
-            return null;
-        }
+        return getAsString(columnName).equalsIgnoreCase("1");
     }
 
 }
