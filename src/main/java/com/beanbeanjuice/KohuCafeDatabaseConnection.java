@@ -1,5 +1,6 @@
 package com.beanbeanjuice;
 
+import com.beanbeanjuice.tables.avatar.AvatarItemHandler;
 import com.beanbeanjuice.tables.ranks.RankHandler;
 import com.beanbeanjuice.tables.ranks.UserRankHandler;
 import com.beanbeanjuice.tables.users.UserHandler;
@@ -62,6 +63,7 @@ public class KohuCafeDatabaseConnection {
         public String getSchema() { return SCHEMA; }
     }
 
+    public AvatarItemHandler AVATAR_ITEMS;
     public RankHandler RANKS;
     public UserRankHandler USER_RANKS;
     public WarnHandler WARNS;
@@ -77,6 +79,7 @@ public class KohuCafeDatabaseConnection {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         SQLConnection connection = new SQLConnection(type.getURL(), type.getPort(), type.getSchema(), username, password);
 
+        AVATAR_ITEMS = new AvatarItemHandler(connection);
         RANKS = new RankHandler(connection);
         WARNS = new WarnHandler(connection);
         USER_RANKS = new UserRankHandler(this, connection);

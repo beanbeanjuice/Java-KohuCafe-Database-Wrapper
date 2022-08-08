@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Warn {
 
-    private final Integer WARN_ID;
+    private final int WARN_ID;
     private final String USER_ID;
     private final String USER_NICKNAME;
     private final String ISSUER_ID;

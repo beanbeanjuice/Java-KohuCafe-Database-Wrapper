@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class User {
 
     private final String USER_ID;
-    private Double balance;
-    private Double multiplier;
+    private double balance;
+    private double multiplier;
     private ArrayList<Rank> ranks;
 
     /**

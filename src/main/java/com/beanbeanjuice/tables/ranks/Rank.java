@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Rank {
 
-    private final Integer ID;
+    private final int ID;
     private String roleID;
     private String name;
     private String description;

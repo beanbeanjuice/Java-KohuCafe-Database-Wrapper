@@ -76,7 +76,7 @@ public class SQLConnection {
             return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace();  // TODO: Delete eventually.
             return false;
         } finally {  // Closes all the connections.
 
