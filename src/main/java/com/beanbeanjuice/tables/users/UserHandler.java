@@ -1,7 +1,6 @@
 package com.beanbeanjuice.tables.users;
 
 import com.beanbeanjuice.KohuCafeDatabaseConnection;
-import com.beanbeanjuice.tables.ranks.Rank;
 import com.beanbeanjuice.utility.exception.rank.RankDoesNotExistException;
 import com.beanbeanjuice.utility.exception.user.UserAlreadyExistsException;
 import com.beanbeanjuice.utility.exception.user.UserDoesNotExistException;
