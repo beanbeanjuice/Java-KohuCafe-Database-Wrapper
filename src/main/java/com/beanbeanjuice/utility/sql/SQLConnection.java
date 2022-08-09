@@ -60,18 +60,6 @@ public class SQLConnection {
     /**
      * Executes a {@link String query} on the {@link SQLConnection}.
      * @param query The {@link String query} to execute.
-     * @return An {@link SQLResult} that was returned from the {@link String query}.
-     * @throws NotConnectedException Thrown if the database is not connected.
-     * @throws DataRetrievalException Thrown if there was an error executing the query on the connection.
-     */
-    @NotNull
-    public SQLResult getResultSet(@NotNull String query) throws NotConnectedException, DataRetrievalException {
-        return getResultSet(query, null);
-    }
-
-    /**
-     * Executes a {@link String query} on the {@link SQLConnection}.
-     * @param query The {@link String query} to execute.
      * @param args A {@link String[]} containing {@link String arguments} to add to a {@link ResultSet}.
      * @return True, if the {@link String query} was executed successfully.
      * @throws NotConnectedException Thrown if the database is not connected.
@@ -113,6 +101,18 @@ public class SQLConnection {
                     connection.close();
             } catch (SQLException ignored) { }
         }
+    }
+
+    /**
+     * Executes a {@link String query} on the {@link SQLConnection}.
+     * @param query The {@link String query} to execute.
+     * @return An {@link SQLResult} that was returned from the {@link String query}.
+     * @throws NotConnectedException Thrown if the database is not connected.
+     * @throws DataRetrievalException Thrown if there was an error executing the query on the connection.
+     */
+    @NotNull
+    public SQLResult getResultSet(@NotNull String query) throws NotConnectedException, DataRetrievalException {
+        return getResultSet(query, null);
     }
 
     /**
@@ -169,7 +169,7 @@ public class SQLConnection {
      * @return The current {@link Connection MySQL connection}.
      * @throws NotConnectedException Thrown if the database has not been connected.
      */
-    @Nullable
+    @NotNull
     public Connection getConnection() throws NotConnectedException {
         if (connection == null)
             throw new NotConnectedException("The database has not been connected.");
