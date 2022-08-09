@@ -18,7 +18,6 @@ import java.util.Iterator;
 public class SQLResult implements Iterable<SQLRow> {
 
     private ArrayList<SQLRow> table = new ArrayList<>();
-    private Boolean success = true;
 
     /**
      * Creates a new {@link SQLResult}.
@@ -26,16 +25,6 @@ public class SQLResult implements Iterable<SQLRow> {
      */
     public SQLResult(@Nullable ResultSet results) {
         mapResults(results);
-    }
-
-    /**
-     * Creates a new {@link SQLResult}.
-     * @param results The {@link ResultSet} from a corresponding {@link java.sql.Connection connection} query.
-     * @param success True, if the query was successfully run.
-     */
-    public SQLResult(@Nullable ResultSet results, @NotNull Boolean success) {
-        mapResults(results);
-        this.success = success;
     }
 
     private void mapResults(@Nullable ResultSet results) {
@@ -53,14 +42,6 @@ public class SQLResult implements Iterable<SQLRow> {
                 table.add(new SQLRow(column));
             }
         } catch (SQLException ignored) { }
-    }
-
-    /**
-     * @return True, if the query was run properly.
-     */
-    @NotNull
-    public Boolean getStatus() {
-        return success;
     }
 
     /**

@@ -93,6 +93,10 @@ public class AvatarItem {
         return damage;
     }
 
+    /**
+     * A copy constructor for {@link AvatarItem}.
+     * @param item The {@link AvatarItem item} to copy the values for.
+     */
     protected void setValues(@NotNull AvatarItem item) {
         this.name = item.getName();
         this.description = item.getDescription();

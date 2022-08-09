@@ -169,6 +169,11 @@ public class RankHandler {
         return false;
     }
 
+    /**
+     * Check if a {@link Rank} exists.
+     * @param rankID The {@link Integer rank ID} to check.
+     * @return True, if the {@link Rank} exists.
+     */
     @NotNull
     public Boolean rankExists(@NotNull Integer rankID) {
         int rankArrayIndex = rankID - 1;

@@ -28,11 +28,4 @@ public class NotConnectedException extends RuntimeException {
         super(message);
     }
 
-    /**
-     * Creates a new {@link NotConnectedException}.
-     */
-    public NotConnectedException() {
-        super();
-    }
-
 }

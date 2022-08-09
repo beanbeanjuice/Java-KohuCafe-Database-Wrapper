@@ -62,22 +62,43 @@ public class UserRankHandler {
         });
     }
 
+    /**
+     * Get an {@link ArrayList} containing all {@link Integer rank IDs} for a user.
+     * @param userID The {@link String user ID} to check.
+     * @return An {@link ArrayList} of {@link Integer rank IDs} for that user.
+     * @throws UserDoesNotHaveRankException Thrown if the user does not have any {@link Rank ranks}.
+     */
     @NotNull
-    public ArrayList<Integer> getUserRankIDs(@NotNull String userID) {
+    public ArrayList<Integer> getUserRankIDs(@NotNull String userID) throws UserDoesNotHaveRankException {
         if (!userRankIDs.containsKey(userID))
             throw new UserDoesNotHaveRanksException(userID);
 
         return userRankIDs.get(userID);
     }
 
+    /**
+     * Get an {@link ArrayList} containing all {@link Rank ranks} for a user.
+     * @param userID The {@link String user ID} to check.
+     * @return An {@link ArrayList} of {@link Rank ranks} for that user.
+     * @throws UserDoesNotHaveRankException Thrown if the user does not have any {@link Rank ranks}.
+     */
     @NotNull
-    public ArrayList<Rank> getUserRanks(@NotNull String userID) {
+    public ArrayList<Rank> getUserRanks(@NotNull String userID) throws UserDoesNotHaveRankException {
         if (!userRanks.containsKey(userID))
             throw new UserDoesNotHaveRanksException(userID);
 
         return userRanks.get(userID);
     }
 
+    /**
+     * Adds a new {@link Rank} to a {@link com.beanbeanjuice.tables.users.User User}.
+     * @param userID The {@link String user ID} for that {@link com.beanbeanjuice.tables.users.User User}.
+     * @param rankID The {@link Integer rank ID} for the {@link Rank}.
+     * @return True, if the {@link Rank} was added successfully.
+     * @throws RankDoesNotExistException Thrown if the {@link Rank} does not exist.
+     * @throws UserDoesNotExistException Thrown if the {@link com.beanbeanjuice.tables.users.User User} does not exist.
+     * @throws UserAlreadyHasRankException Thrown if the {@link com.beanbeanjuice.tables.users.User User} already has that {@link Rank}.
+     */
     @NotNull
     public Boolean addRankToUser(@NotNull String userID, @NotNull Integer rankID)
             throws RankDoesNotExistException, UserDoesNotExistException, UserAlreadyHasRankException {
@@ -104,6 +125,15 @@ public class UserRankHandler {
         return false;
     }
 
+    /**
+     * Remove a {@link Rank} from a {@link com.beanbeanjuice.tables.users.User User}.
+     * @param userID The {@link String user ID} for that {@link com.beanbeanjuice.tables.users.User User}.
+     * @param rankID The {@link Integer rank ID} for that {@link Rank}.
+     * @return True, if the {@link Rank} was successfully added to the {@link com.beanbeanjuice.tables.users.User User}.
+     * @throws RankDoesNotExistException Thrown if the {@link Rank} does not exist.
+     * @throws UserDoesNotExistException Thrown if the {@link com.beanbeanjuice.tables.users.User User} does not exist.
+     * @throws UserDoesNotHaveRankException Thrown if the {@link com.beanbeanjuice.tables.users.User User} does not have that {@link Rank}.
+     */
     @NotNull
     public Boolean removeRankFromUser(@NotNull String userID, @NotNull Integer rankID)
             throws RankDoesNotExistException, UserDoesNotExistException, UserDoesNotHaveRankException {

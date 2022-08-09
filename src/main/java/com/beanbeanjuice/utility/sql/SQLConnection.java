@@ -1,11 +1,11 @@
 package com.beanbeanjuice.utility.sql;
 
+import com.beanbeanjuice.utility.exception.DataRetrievalException;
 import com.beanbeanjuice.utility.exception.NotConnectedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 /**
  * A class used for connecting to a MySQL database.
@@ -45,23 +45,45 @@ public class SQLConnection {
         connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 
+    /**
+     * Executes a {@link String query} on the {@link SQLConnection}.
+     * @param query The {@link String query} to execute.
+     * @return True, if the {@link String query} was executed successfully.
+     * @throws NotConnectedException Thrown if the database is not connected.
+     * @throws DataRetrievalException Thrown if there was an error executing the query on the connection.
+     */
     @NotNull
-    public Boolean executeQuery(@NotNull String query) {
+    public Boolean executeQuery(@NotNull String query) throws NotConnectedException, DataRetrievalException {
         return executeQuery(query, null);
     }
 
+    /**
+     * Executes a {@link String query} on the {@link SQLConnection}.
+     * @param query The {@link String query} to execute.
+     * @return An {@link SQLResult} that was returned from the {@link String query}.
+     * @throws NotConnectedException Thrown if the database is not connected.
+     * @throws DataRetrievalException Thrown if there was an error executing the query on the connection.
+     */
     @NotNull
-    public SQLResult getResultSet(@NotNull String query) {
+    public SQLResult getResultSet(@NotNull String query) throws NotConnectedException, DataRetrievalException {
         return getResultSet(query, null);
     }
 
+    /**
+     * Executes a {@link String query} on the {@link SQLConnection}.
+     * @param query The {@link String query} to execute.
+     * @param args A {@link String[]} containing {@link String arguments} to add to a {@link ResultSet}.
+     * @return True, if the {@link String query} was executed successfully.
+     * @throws NotConnectedException Thrown if the database is not connected.
+     * @throws DataRetrievalException Thrown if there was an error executing the query on the connection.
+     */
     @NotNull
-    public Boolean executeQuery(@NotNull String query, @Nullable String[] args) {
+    public Boolean executeQuery(@NotNull String query, @Nullable String[] args) throws NotConnectedException, DataRetrievalException {
 
         try {
             connect();
         } catch (SQLException e) {
-            throw new NotConnectedException("Failed to connect to the database.");
+            throw new NotConnectedException("Failed to connect to the database.", e);
         }
 
         PreparedStatement statement = null;
@@ -76,8 +98,7 @@ public class SQLConnection {
             return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();  // TODO: Delete eventually.
-            return false;
+            throw new DataRetrievalException("Error retrieving data from the database.", e);
         } finally {  // Closes all the connections.
 
             try {
@@ -95,18 +116,20 @@ public class SQLConnection {
     }
 
     /**
-     * Run a {@link PreparedStatement} query on the {@link Connection MySQL connection}.
-     * @param query The {@link String query} to run.
-     * @param args The {@link ArrayList<String> arguments} to use.
-     * @return The finalised {@link SQLResult result}.
+     * Executes a {@link String query} on the {@link SQLConnection}.
+     * @param query The {@link String query} to execute.
+     * @param args A {@link String[]} containing {@link String arguments} to add to a {@link ResultSet}.
+     * @return An {@link SQLResult} that was returned from the {@link String query}.
+     * @throws NotConnectedException Thrown if the database is not connected.
+     * @throws DataRetrievalException Thrown if there was an error executing the query on the connection.
      */
     @NotNull
-    public SQLResult getResultSet(@NotNull String query, @Nullable String[] args) {
+    public SQLResult getResultSet(@NotNull String query, @Nullable String[] args) throws NotConnectedException, DataRetrievalException {
 
         try {
             connect();
         } catch (SQLException e) {
-            throw new NotConnectedException("Failed to connect to the database.");
+            throw new NotConnectedException("Failed to connect to the database.", e);
         }
 
         PreparedStatement statement = null;
@@ -122,7 +145,7 @@ public class SQLConnection {
             return new SQLResult(results);
 
         } catch (SQLException e) {
-            return new SQLResult(null, false);
+            throw new DataRetrievalException("Error retrieving a result from the database.", e);
         } finally {  // Closes all the connections.
 
             try {

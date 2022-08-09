@@ -24,6 +24,10 @@ public class WarnHandler {
     private HashMap<String, ArrayList<Warn>> warns = new HashMap<>();
     private SQLConnection connection;
 
+    /**
+     * Creates a new {@link WarnHandler} object.
+     * @param connection The {@link SQLConnection database connection}.
+     */
     public WarnHandler(@NotNull SQLConnection connection) {
         this.connection = connection;
         cache();
@@ -50,6 +54,12 @@ public class WarnHandler {
         }
     }
 
+    /**
+     * Get an {@link ArrayList} of all {@link Warn active warns} for a {@link com.beanbeanjuice.tables.users.User User}.
+     * @param userID The {@link String user ID} to get the {@link Warn active warns} of.
+     * @return An {@link ArrayList} of all {@link Warn active warns} for a {@link com.beanbeanjuice.tables.users.User User}.
+     * @throws UserDoesNotHaveActiveWarnsException Thrown if the {@link com.beanbeanjuice.tables.users.User User} does not have any {@link Warn active warns}.
+     */
     @NotNull
     public ArrayList<Warn> getActiveUserWarns(@NotNull String userID) throws UserDoesNotHaveActiveWarnsException {
         if (!warns.containsKey(userID))
@@ -63,6 +73,12 @@ public class WarnHandler {
         return activeWarns;
     }
 
+    /**
+     * Get an {@link ArrayList} of all {@link Warn warns} for a {@link com.beanbeanjuice.tables.users.User User}.
+     * @param userID The {@link String user ID} to get the {@link Warn warns} for.
+     * @return An {@link ArrayList} of all {@link Warn warns} for a {@link com.beanbeanjuice.tables.users.User User}.
+     * @throws UserDoesNotHaveWarnsException Thrown if an {@link com.beanbeanjuice.tables.users.User User} does not have any {@link Warn warns}.
+     */
     @NotNull
     public ArrayList<Warn> getAllUserWarns(@NotNull String userID) throws UserDoesNotHaveWarnsException {
         if (!warns.containsKey(userID))
@@ -71,7 +87,13 @@ public class WarnHandler {
         return warns.get(userID);
     }
 
-    @Nullable
+    /**
+     * Get a specific {@link Warn}.
+     * @param warnID The {@link Integer warn ID} for the {@link Warn}.
+     * @return The {@link Warn} specified.
+     * @throws WarnDoesNotExistException Thrown if the {@link Warn} does not exist.
+     */
+    @NotNull
     public Warn getWarn(@NotNull Integer warnID) throws WarnDoesNotExistException {
         for (Map.Entry<String, ArrayList<Warn>> pair : warns.entrySet()) {
             for (Warn warn : pair.getValue())
@@ -81,11 +103,17 @@ public class WarnHandler {
         throw new WarnDoesNotExistException(warnID);
     }
 
+    /**
+     * @return A {@link HashMap} with keys of {@link String user IDs} and values of {@link ArrayList} of {@link Warn warns}.
+     */
     @NotNull
     public HashMap<String, ArrayList<Warn>> getAllWarnsTable() {
         return warns;
     }
 
+    /**
+     * @return An {@link ArrayList} of all {@link Warn warns} in the database.
+     */
     @NotNull
     public ArrayList<Warn> getAllWarns() {
         ArrayList<Warn> warnsArray = new ArrayList<>();
@@ -95,6 +123,15 @@ public class WarnHandler {
         return warnsArray;
     }
 
+    /**
+     * Add a {@link Warn} to the database.
+     * @param userID The {@link String user ID} of the person the {@link Warn} is for.
+     * @param userNickname The {@link String username} of the person the {@link Warn} is for.
+     * @param issuerID The {@link String user ID} of the person who issued the {@link Warn}.
+     * @param issuerNickname The {@link String nickname} of the person who issued the {@link Warn}.
+     * @param reason The {@link String reason} for issuing the {@link Warn}.
+     * @return True, if the {@link Warn} was added successfully.
+     */
     @NotNull
     public Boolean addWarn(@NotNull String userID, @NotNull String userNickname,
                            @NotNull String issuerID, @NotNull String issuerNickname,
@@ -126,6 +163,11 @@ public class WarnHandler {
         return false;
     }
 
+    /**
+     * Check if a specific {@link Warn} exists.
+     * @param warnID The {@link Integer warn ID} to check for.
+     * @return True, if the {@link Warn} exists.
+     */
     @NotNull
     public Boolean warnExists(@NotNull Integer warnID) {
         for (Map.Entry<String, ArrayList<Warn>> userWarns : warns.entrySet())
@@ -135,6 +177,13 @@ public class WarnHandler {
         return false;
     }
 
+    /**
+     * Update the {@link Boolean active status} for a specific {@link Warn}.
+     * @param warnID The {@link Integer warn ID} to update the {@link Boolean active status} for.
+     * @param isActive The {@link Boolean active status} to set the {@link Warn} to.
+     * @return True, if the {@link Boolean active status} was updated successfully.
+     * @throws WarnDoesNotExistException Thrown if the {@link Warn} does not exist.
+     */
     @NotNull
     public Boolean updateWarnActiveStatus(@NotNull Integer warnID, @NotNull Boolean isActive) throws WarnDoesNotExistException {
         String query = "UPDATE warns SET active = (?) WHERE id = (?)";

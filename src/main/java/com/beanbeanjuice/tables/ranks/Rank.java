@@ -61,15 +61,28 @@ public class Rank {
         return description;
     }
 
+    /**
+     * Set a new {@link String rank role ID}.
+     * @param roleID The {@link String rank role ID} to set to.
+     */
     protected void setRoleID(@NotNull String roleID) {
         this.roleID = roleID;
     }
 
+    /**
+     * Set a new {@link String rank name}.
+     * @param name The {@link String rank name} to set.
+     */
     protected void setName(@NotNull String name) {
         this.name = name;
     }
 
+    /**
+     * Set a new {@link String rank description}.
+     * @param description The {@link String rank description} to set.
+     */
     protected void setDescription(@NotNull String description) {
         this.description = description;
     }
+
 }

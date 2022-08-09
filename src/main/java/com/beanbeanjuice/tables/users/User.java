@@ -64,16 +64,20 @@ public class User {
         return ranks;
     }
 
+    /**
+     * Update the {@link Double balance} for the {@link User user}.
+     * @param balance The new {@link Double balance} to be set to.
+     */
     protected void updateBalance(@NotNull Double balance) {
         this.balance = balance;
     }
 
+    /**
+     * Update the {@link Double multiplier} for the {@link User user}.
+     * @param multiplier The new {@link Double multiplier} to be set to.
+     */
     protected void updateMultiplier(@NotNull Double multiplier) {
         this.multiplier = multiplier;
-    }
-
-    protected void addRank(@NotNull Rank rank) {
-        ranks.add(rank);
     }
 
     /**
@@ -88,10 +92,5 @@ public class User {
                 return true;
         return false;
     }
-
-    protected void removeRank(@NotNull Rank rank) {
-        ranks.remove(rank);
-    }
-
 
 }
