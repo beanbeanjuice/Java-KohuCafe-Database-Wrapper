@@ -1,5 +1,7 @@
 import com.beanbeanjuice.KohuCafeAPI;
 import com.beanbeanjuice.tables.avatar.AvatarItem;
+import com.beanbeanjuice.utility.exception.item.AvatarInventoryDoesNotContainItemException;
+import com.beanbeanjuice.utility.exception.item.AvatarInventoryDoesNotExistException;
 import com.beanbeanjuice.utility.exception.item.AvatarItemDoesNotExistException;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Assertions;
@@ -62,8 +64,21 @@ public class TestAvatarInventoryHandler {
         Assertions.assertEquals(0.0, kohuCafeAPI.AVATAR_INVENTORY.getAvatarItem(OWNER, 2).getWeight());
 
         Assertions.assertTrue(kohuCafeAPI.AVATAR_INVENTORY.removeItem(OWNER, 2));
-        Assertions.assertNull(kohuCafeAPI.AVATAR_INVENTORY.getAvatarItem(OWNER, 2));
+        Assertions.assertThrows(AvatarInventoryDoesNotContainItemException.class, () -> kohuCafeAPI.AVATAR_INVENTORY.getAvatarItem(OWNER, 2));
         Assertions.assertFalse(kohuCafeAPI.AVATAR_INVENTORY.giveItem(OWNER, 3));
+    }
+
+    @Test
+    @DisplayName("Test Avatar Inventory Handler Exceptions")
+    public void testAvatarInventoryHandlerExceptions() {
+        KohuCafeAPI kohuCafeAPI = new KohuCafeAPI(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeAPI.TYPE.BETA);
+
+        Assertions.assertThrows(AvatarItemDoesNotExistException.class, () -> kohuCafeAPI.AVATAR_INVENTORY.giveItem(OWNER, 0));
+        Assertions.assertThrows(AvatarInventoryDoesNotExistException.class, () -> kohuCafeAPI.AVATAR_INVENTORY.getAvatarItem("0", 1));
+        Assertions.assertThrows(AvatarInventoryDoesNotContainItemException.class, () -> kohuCafeAPI.AVATAR_INVENTORY.getAvatarItem(OWNER, 4));
+
+        Assertions.assertThrows(AvatarItemDoesNotExistException.class, () -> kohuCafeAPI.AVATAR_INVENTORY.giveItem(OWNER, 0));
+        Assertions.assertThrows(AvatarItemDoesNotExistException.class, () -> kohuCafeAPI.AVATAR_INVENTORY.removeItem(OWNER, 0));
     }
 
 }

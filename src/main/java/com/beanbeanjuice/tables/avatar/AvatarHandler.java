@@ -10,12 +10,23 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
+/**
+ * A class used for handling {@link Avatar avatars}.
+ *
+ * @author beanbeanjuice
+ * @since 1.0.0
+ */
 public class AvatarHandler {
 
     private HashMap<String, Avatar> avatars = new HashMap<>();
     private KohuCafeAPI api;
     private SQLConnection connection;
 
+    /**
+     * Creates a nwe {@link AvatarHandler} object.
+     * @param api The {@link KohuCafeAPI api connection}.
+     * @param connection The {@link SQLConnection database connection}.
+     */
     public AvatarHandler(@NotNull KohuCafeAPI api, @NotNull SQLConnection connection) {
         this.api = api;
         this.connection = connection;
@@ -32,6 +43,12 @@ public class AvatarHandler {
         }
     }
 
+    /**
+     * Adds an {@link Avatar} to the database.
+     * @param userID The {@link String user ID} of the {@link Avatar} to add.
+     * @return True, if the {@link Avatar} was added successfully.
+     * @throws AvatarAlreadyExistsException Thrown if an {@link Avatar} with that {@link String user ID} already exists.
+     */
     @NotNull
     public Boolean addAvatar(@NotNull String userID) throws AvatarAlreadyExistsException {
 
@@ -67,6 +84,12 @@ public class AvatarHandler {
         return new Avatar(maxHealth, strength, intelligence, api.AVATAR_INVENTORY.getAvatarItems(userID));
     }
 
+    /**
+     * Get an {@link Avatar} from a specified {@link String user ID}.
+     * @param userID The {@link String user ID} specified.
+     * @return The specified {@link Avatar}.
+     * @throws AvatarDoesNotExistException Thrown if an {@link Avatar} for that {@link String user ID} does not exist.
+     */
     @NotNull
     public Avatar getAvatar(@NotNull String userID) throws AvatarDoesNotExistException {
         if (!avatars.containsKey(userID))
@@ -75,6 +98,15 @@ public class AvatarHandler {
         return avatars.get(userID);
     }
 
+    /**
+     * Update an {@link Avatar} in the database.
+     * @param userID The {@link String user ID} of the {@link Avatar}.
+     * @param maxHealth The {@link Integer max health} of the {@link Avatar}.
+     * @param strength The {@link Integer strength} of the {@link Avatar}.
+     * @param intelligence The {@link Integer intelligence} of the {@link Avatar}.
+     * @return True, if the {@link Avatar} was updated successfully.
+     * @throws AvatarDoesNotExistException Thrown if the {@link Avatar} does not exist for that {@link String user ID}.
+     */
     @NotNull
     public Boolean updateAvatar(@NotNull String userID, @NotNull Integer maxHealth, @NotNull Integer strength,
                                 @NotNull Integer intelligence) throws AvatarDoesNotExistException {

@@ -1,7 +1,7 @@
 package com.beanbeanjuice.tables.avatar;
 
 import com.beanbeanjuice.KohuCafeAPI;
-import com.beanbeanjuice.utility.exception.avatar.AvatarInventoryDoesNotContainItemException;
+import com.beanbeanjuice.utility.exception.item.AvatarInventoryDoesNotContainItemException;
 import com.beanbeanjuice.utility.exception.item.AvatarInventoryDoesNotExistException;
 import com.beanbeanjuice.utility.exception.item.AvatarItemDoesNotExistException;
 import com.beanbeanjuice.utility.sql.SQLConnection;
@@ -59,7 +59,7 @@ public class AvatarInventoryHandler {
 
     @NotNull
     public AvatarItem getAvatarItem(@NotNull String userID, @NotNull Integer itemID)
-    throws AvatarItemDoesNotExistException, AvatarInventoryDoesNotContainItemException{
+    throws AvatarItemDoesNotExistException, AvatarInventoryDoesNotContainItemException {
         if (!userItems.containsKey(userID))
             throw new AvatarInventoryDoesNotExistException(userID);
 
