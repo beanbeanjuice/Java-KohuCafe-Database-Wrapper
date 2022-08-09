@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.beanbeanjuice</groupId>
-    <artifactId>Java-KohuCafe-Database-Wrapper</artifactId>
+    <artifactId>kohucafe-database-wrapper</artifactId>
     <version>${version.number.final}</version>
     <packaging>jar</packaging>
 
