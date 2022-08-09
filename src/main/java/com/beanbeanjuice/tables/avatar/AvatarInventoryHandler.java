@@ -1,11 +1,12 @@
 package com.beanbeanjuice.tables.avatar;
 
-import com.beanbeanjuice.KohuCafeDatabaseConnection;
+import com.beanbeanjuice.KohuCafeAPI;
+import com.beanbeanjuice.utility.exception.avatar.AvatarInventoryDoesNotContainItemException;
+import com.beanbeanjuice.utility.exception.item.AvatarInventoryDoesNotExistException;
 import com.beanbeanjuice.utility.exception.item.AvatarItemDoesNotExistException;
 import com.beanbeanjuice.utility.sql.SQLConnection;
 import com.beanbeanjuice.utility.sql.SQLRow;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,15 +21,15 @@ import java.util.Map;
 public class AvatarInventoryHandler {
 
     private HashMap<String, ArrayList<AvatarItem>> userItems = new HashMap<>();
-    private KohuCafeDatabaseConnection api;
+    private KohuCafeAPI api;
     private SQLConnection connection;
 
     /**
      * Creates a new {@link AvatarInventoryHandler}.
-     * @param api The {@link KohuCafeDatabaseConnection api connection} to the database.
+     * @param api The {@link KohuCafeAPI api connection} to the database.
      * @param connection The {@link SQLConnection connection} to the database.
      */
-    public AvatarInventoryHandler(@NotNull KohuCafeDatabaseConnection api, @NotNull SQLConnection connection) {
+    public AvatarInventoryHandler(@NotNull KohuCafeAPI api, @NotNull SQLConnection connection) {
         this.api = api;
         this.connection = connection;
         cache();
@@ -48,34 +49,24 @@ public class AvatarInventoryHandler {
         }
     }
 
-    /**
-     * Get all of the {@link AvatarItem items} for a specified user.
-     * @param userID The {@link String user ID} specified.
-     * @return The {@link ArrayList} of {@link AvatarItem items} for that user.
-     */
     @NotNull
     public ArrayList<AvatarItem> getAvatarItems(@NotNull String userID) {
         if (!userItems.containsKey(userID))
-            return new ArrayList<>();
+            userItems.put(userID, new ArrayList<>());
 
         return userItems.get(userID);
     }
 
-    /**
-     * Get a specific {@link AvatarItem item} for a specified user.
-     * @param userID The {@link String user ID} for specified.
-     * @param itemID The {@link Integer item ID} specified.
-     * @return The {@link AvatarItem item} for that user.
-     */
-    @Nullable
-    public AvatarItem getAvatarItem(@NotNull String userID, @NotNull Integer itemID) {
+    @NotNull
+    public AvatarItem getAvatarItem(@NotNull String userID, @NotNull Integer itemID)
+    throws AvatarItemDoesNotExistException, AvatarInventoryDoesNotContainItemException{
         if (!userItems.containsKey(userID))
-            return null;
+            throw new AvatarInventoryDoesNotExistException(userID);
 
         for (AvatarItem item : userItems.get(userID))
             if (item.getID().equals(itemID))
                 return item;
-        return null;
+        throw new AvatarInventoryDoesNotContainItemException(userID, itemID);
     }
 
     /**

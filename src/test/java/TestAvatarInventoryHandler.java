@@ -1,4 +1,4 @@
-import com.beanbeanjuice.KohuCafeDatabaseConnection;
+import com.beanbeanjuice.KohuCafeAPI;
 import com.beanbeanjuice.tables.avatar.AvatarItem;
 import com.beanbeanjuice.utility.exception.item.AvatarItemDoesNotExistException;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -16,13 +16,13 @@ public class TestAvatarInventoryHandler {
     @Test
     @DisplayName("Test Avatar Inventory Handler")
     public void testAvatarInventoryHandler() {
-        KohuCafeDatabaseConnection kohuCafeDatabaseConnection = new KohuCafeDatabaseConnection(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeDatabaseConnection.TYPE.BETA);
+        KohuCafeAPI kohuCafeAPI = new KohuCafeAPI(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeAPI.TYPE.BETA);
 
-        Assertions.assertTrue(kohuCafeDatabaseConnection.AVATARS.hasItem(OWNER, 1));
-        Assertions.assertFalse(kohuCafeDatabaseConnection.AVATARS.hasItem(OWNER, 2));
+        Assertions.assertTrue(kohuCafeAPI.AVATAR_INVENTORY.hasItem(OWNER, 1));
+        Assertions.assertFalse(kohuCafeAPI.AVATAR_INVENTORY.hasItem(OWNER, 2));
 
-        Assertions.assertThrows(AvatarItemDoesNotExistException.class, () -> kohuCafeDatabaseConnection.AVATARS.giveItem(OWNER, 0));
-        Assertions.assertTrue(() -> kohuCafeDatabaseConnection.AVATARS.getAvatarItems(OWNER).size() >= 1);
+        Assertions.assertThrows(AvatarItemDoesNotExistException.class, () -> kohuCafeAPI.AVATAR_INVENTORY.giveItem(OWNER, 0));
+        Assertions.assertTrue(() -> kohuCafeAPI.AVATAR_INVENTORY.getAvatarItems(OWNER).size() >= 1);
 
         int id = 2;
         String name = "Test Item #2";
@@ -33,8 +33,8 @@ public class TestAvatarInventoryHandler {
         double damage = 0;
 
         // Test if item updates in inventory.
-        Assertions.assertTrue(kohuCafeDatabaseConnection.AVATARS.giveItem(OWNER, 2));
-        Assertions.assertTrue(kohuCafeDatabaseConnection.AVATAR_ITEMS.updateItem(
+        Assertions.assertTrue(kohuCafeAPI.AVATAR_INVENTORY.giveItem(OWNER, 2));
+        Assertions.assertTrue(kohuCafeAPI.AVATAR_ITEMS.updateItem(
                 new AvatarItem(
                         id,
                         name,
@@ -46,9 +46,9 @@ public class TestAvatarInventoryHandler {
                 )
         ));
 
-        Assertions.assertNotNull(kohuCafeDatabaseConnection.AVATARS.getAvatarItem(OWNER, 2));
-        Assertions.assertEquals(1.0, kohuCafeDatabaseConnection.AVATARS.getAvatarItem(OWNER, 2).getWeight());
-        Assertions.assertTrue(kohuCafeDatabaseConnection.AVATAR_ITEMS.updateItem(
+        Assertions.assertNotNull(kohuCafeAPI.AVATAR_INVENTORY.getAvatarItem(OWNER, 2));
+        Assertions.assertEquals(1.0, kohuCafeAPI.AVATAR_INVENTORY.getAvatarItem(OWNER, 2).getWeight());
+        Assertions.assertTrue(kohuCafeAPI.AVATAR_ITEMS.updateItem(
                 new AvatarItem(
                         id,
                         name,
@@ -59,11 +59,11 @@ public class TestAvatarInventoryHandler {
                         damage
                 )
         ));
-        Assertions.assertEquals(0.0, kohuCafeDatabaseConnection.AVATARS.getAvatarItem(OWNER, 2).getWeight());
+        Assertions.assertEquals(0.0, kohuCafeAPI.AVATAR_INVENTORY.getAvatarItem(OWNER, 2).getWeight());
 
-        Assertions.assertTrue(kohuCafeDatabaseConnection.AVATARS.removeItem(OWNER, 2));
-        Assertions.assertNull(kohuCafeDatabaseConnection.AVATARS.getAvatarItem(OWNER, 2));
-        Assertions.assertFalse(kohuCafeDatabaseConnection.AVATARS.giveItem(OWNER, 3));
+        Assertions.assertTrue(kohuCafeAPI.AVATAR_INVENTORY.removeItem(OWNER, 2));
+        Assertions.assertNull(kohuCafeAPI.AVATAR_INVENTORY.getAvatarItem(OWNER, 2));
+        Assertions.assertFalse(kohuCafeAPI.AVATAR_INVENTORY.giveItem(OWNER, 3));
     }
 
 }

@@ -1,4 +1,4 @@
-import com.beanbeanjuice.KohuCafeDatabaseConnection;
+import com.beanbeanjuice.KohuCafeAPI;
 import com.beanbeanjuice.utility.exception.WarnDoesNotExistException;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Assertions;
@@ -15,30 +15,30 @@ public class TestWarnHandler {
     @Test
     @DisplayName("Test User Handler")
     public void testWarnHandler() {
-        KohuCafeDatabaseConnection kohuCafeDatabaseConnection = new KohuCafeDatabaseConnection(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeDatabaseConnection.TYPE.BETA);
-        Assertions.assertNotNull(kohuCafeDatabaseConnection.WARNS.getActiveUserWarns(OWNER));
-        Assertions.assertEquals(1, kohuCafeDatabaseConnection.WARNS.getActiveUserWarns(OWNER).get(0).getWarnID());
-        Assertions.assertTrue(() -> kohuCafeDatabaseConnection.WARNS.getAllUserWarns(OWNER).size() >= 2);
-        Assertions.assertEquals("beanbeanjuice", kohuCafeDatabaseConnection.WARNS.getActiveUserWarns(OWNER).get(0).getIssuerNickname());
+        KohuCafeAPI kohuCafeAPI = new KohuCafeAPI(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeAPI.TYPE.BETA);
+        Assertions.assertNotNull(kohuCafeAPI.WARNS.getActiveUserWarns(OWNER));
+        Assertions.assertEquals(1, kohuCafeAPI.WARNS.getActiveUserWarns(OWNER).get(0).getWarnID());
+        Assertions.assertTrue(() -> kohuCafeAPI.WARNS.getAllUserWarns(OWNER).size() >= 2);
+        Assertions.assertEquals("beanbeanjuice", kohuCafeAPI.WARNS.getActiveUserWarns(OWNER).get(0).getIssuerNickname());
 
-        int prevID = kohuCafeDatabaseConnection.WARNS.getAllWarns().size();
-        int numberOfWarns = kohuCafeDatabaseConnection.WARNS.getAllUserWarns(OWNER).size();
-        int numberOfActiveWarns = kohuCafeDatabaseConnection.WARNS.getActiveUserWarns(OWNER).size();
-        Assertions.assertTrue(kohuCafeDatabaseConnection.WARNS.addWarn(OWNER, "beanbeanjuice",
+        int prevID = kohuCafeAPI.WARNS.getAllWarns().size();
+        int numberOfWarns = kohuCafeAPI.WARNS.getAllUserWarns(OWNER).size();
+        int numberOfActiveWarns = kohuCafeAPI.WARNS.getActiveUserWarns(OWNER).size();
+        Assertions.assertTrue(kohuCafeAPI.WARNS.addWarn(OWNER, "beanbeanjuice",
                 OWNER, "beanbeanjuice", "Testing!"));
-        Assertions.assertEquals(prevID+1, kohuCafeDatabaseConnection.WARNS.getAllUserWarns(OWNER).get(numberOfWarns).getWarnID());
-        Assertions.assertEquals(numberOfActiveWarns+1, kohuCafeDatabaseConnection.WARNS.getActiveUserWarns(OWNER).size());
-        Assertions.assertEquals(numberOfWarns+1, kohuCafeDatabaseConnection.WARNS.getAllUserWarns(OWNER).size());
-        Assertions.assertTrue(kohuCafeDatabaseConnection.WARNS.updateWarnActiveStatus(prevID+1, false));
+        Assertions.assertEquals(prevID+1, kohuCafeAPI.WARNS.getAllUserWarns(OWNER).get(numberOfWarns).getWarnID());
+        Assertions.assertEquals(numberOfActiveWarns+1, kohuCafeAPI.WARNS.getActiveUserWarns(OWNER).size());
+        Assertions.assertEquals(numberOfWarns+1, kohuCafeAPI.WARNS.getAllUserWarns(OWNER).size());
+        Assertions.assertTrue(kohuCafeAPI.WARNS.updateWarnActiveStatus(prevID+1, false));
     }
 
     @Test
     @DisplayName("Test Warn Handler Exceptions")
     public void testWarnHandlerExceptions() {
-        KohuCafeDatabaseConnection kohuCafeDatabaseConnection = new KohuCafeDatabaseConnection(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeDatabaseConnection.TYPE.BETA);
+        KohuCafeAPI kohuCafeAPI = new KohuCafeAPI(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeAPI.TYPE.BETA);
 
-        Assertions.assertThrows(WarnDoesNotExistException.class, () -> kohuCafeDatabaseConnection.WARNS.getWarn(0));
-        Assertions.assertThrows(WarnDoesNotExistException.class, () -> kohuCafeDatabaseConnection.WARNS.updateWarnActiveStatus(0, false));
+        Assertions.assertThrows(WarnDoesNotExistException.class, () -> kohuCafeAPI.WARNS.getWarn(0));
+        Assertions.assertThrows(WarnDoesNotExistException.class, () -> kohuCafeAPI.WARNS.updateWarnActiveStatus(0, false));
     }
 
 }

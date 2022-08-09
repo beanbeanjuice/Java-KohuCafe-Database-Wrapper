@@ -1,4 +1,4 @@
-import com.beanbeanjuice.KohuCafeDatabaseConnection;
+import com.beanbeanjuice.KohuCafeAPI;
 import com.beanbeanjuice.utility.exception.rank.RankDoesNotExistException;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Assertions;
@@ -15,43 +15,43 @@ public class TestRankHandler {
     @Test
     @DisplayName("Test Rank Handler")
     public void testRankHandler() {
-        KohuCafeDatabaseConnection kohuCafeDatabaseConnection = new KohuCafeDatabaseConnection(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeDatabaseConnection.TYPE.BETA);
-        Assertions.assertNotNull(kohuCafeDatabaseConnection.USER_RANKS.getUserRanks(OWNER));
-        int currentID = kohuCafeDatabaseConnection.RANKS.getRanks().size() + 1;
+        KohuCafeAPI kohuCafeAPI = new KohuCafeAPI(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeAPI.TYPE.BETA);
+        Assertions.assertNotNull(kohuCafeAPI.USER_RANKS.getUserRanks(OWNER));
+        int currentID = kohuCafeAPI.RANKS.getRanks().size() + 1;
         String roleID = String.valueOf(currentID + 500);
 
-        Assertions.assertTrue(kohuCafeDatabaseConnection.RANKS.addRank(roleID, "For Testing", "For testing purposes."));
+        Assertions.assertTrue(kohuCafeAPI.RANKS.addRank(roleID, "For Testing", "For testing purposes."));
 
-        Assertions.assertNotNull(kohuCafeDatabaseConnection.RANKS.getRank(currentID));
-        Assertions.assertEquals(roleID, kohuCafeDatabaseConnection.RANKS.getRank(currentID).getRoleID());
-        Assertions.assertEquals("For Testing", kohuCafeDatabaseConnection.RANKS.getRank(currentID).getName());
-        Assertions.assertEquals("For testing purposes.", kohuCafeDatabaseConnection.RANKS.getRank(currentID).getDescription());
+        Assertions.assertNotNull(kohuCafeAPI.RANKS.getRank(currentID));
+        Assertions.assertEquals(roleID, kohuCafeAPI.RANKS.getRank(currentID).getRoleID());
+        Assertions.assertEquals("For Testing", kohuCafeAPI.RANKS.getRank(currentID).getName());
+        Assertions.assertEquals("For testing purposes.", kohuCafeAPI.RANKS.getRank(currentID).getDescription());
 
         String newRoleID = String.valueOf(currentID + 499);
 
-        Assertions.assertTrue(kohuCafeDatabaseConnection.RANKS.setRoleID(currentID, newRoleID));
-        Assertions.assertEquals(newRoleID, kohuCafeDatabaseConnection.RANKS.getRank(currentID).getRoleID());
+        Assertions.assertTrue(kohuCafeAPI.RANKS.setRoleID(currentID, newRoleID));
+        Assertions.assertEquals(newRoleID, kohuCafeAPI.RANKS.getRank(currentID).getRoleID());
 
-        Assertions.assertTrue(kohuCafeDatabaseConnection.RANKS.setName(currentID, "For Not Testing"));
-        Assertions.assertEquals("For Not Testing", kohuCafeDatabaseConnection.RANKS.getRank(currentID).getName());
+        Assertions.assertTrue(kohuCafeAPI.RANKS.setName(currentID, "For Not Testing"));
+        Assertions.assertEquals("For Not Testing", kohuCafeAPI.RANKS.getRank(currentID).getName());
 
-        Assertions.assertTrue(kohuCafeDatabaseConnection.RANKS.setDescription(currentID, "For not testing purposes."));
-        Assertions.assertEquals("For not testing purposes.", kohuCafeDatabaseConnection.RANKS.getRank(currentID).getDescription());
+        Assertions.assertTrue(kohuCafeAPI.RANKS.setDescription(currentID, "For not testing purposes."));
+        Assertions.assertEquals("For not testing purposes.", kohuCafeAPI.RANKS.getRank(currentID).getDescription());
     }
 
     @Test
     @DisplayName("Test Rank Handler Exceptions")
     public void testRankHandlerExceptions() {
-        KohuCafeDatabaseConnection kohuCafeDatabaseConnection = new KohuCafeDatabaseConnection(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeDatabaseConnection.TYPE.BETA);
-        int currentID = kohuCafeDatabaseConnection.RANKS.getRanks().size() + 1;
-        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeDatabaseConnection.RANKS.getRank(currentID + 10));
-        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeDatabaseConnection.RANKS.getRank(-1));
-        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeDatabaseConnection.RANKS.setRoleID(currentID + 10, "0"));
-        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeDatabaseConnection.RANKS.setRoleID(-1, "0"));
-        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeDatabaseConnection.RANKS.setName(currentID + 10, "Fail"));
-        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeDatabaseConnection.RANKS.setName(-1, "Fail"));
-        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeDatabaseConnection.RANKS.setDescription(currentID + 10, "Fail"));
-        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeDatabaseConnection.RANKS.setDescription(-1, "Fail"));
+        KohuCafeAPI kohuCafeAPI = new KohuCafeAPI(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeAPI.TYPE.BETA);
+        int currentID = kohuCafeAPI.RANKS.getRanks().size() + 1;
+        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeAPI.RANKS.getRank(currentID + 10));
+        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeAPI.RANKS.getRank(-1));
+        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeAPI.RANKS.setRoleID(currentID + 10, "0"));
+        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeAPI.RANKS.setRoleID(-1, "0"));
+        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeAPI.RANKS.setName(currentID + 10, "Fail"));
+        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeAPI.RANKS.setName(-1, "Fail"));
+        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeAPI.RANKS.setDescription(currentID + 10, "Fail"));
+        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeAPI.RANKS.setDescription(-1, "Fail"));
 
     }
 

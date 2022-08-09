@@ -1,10 +1,10 @@
-import com.beanbeanjuice.KohuCafeDatabaseConnection;
+import com.beanbeanjuice.KohuCafeAPI;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class TestKohuCafeDatabaseConnection {
+public class TestKohuCafeAPI {
 
     private static final Dotenv DOT_ENV = Dotenv.load();
     private static final String MYSQL_USERNAME = DOT_ENV.get("MYSQL_USERNAME");
@@ -13,9 +13,9 @@ public class TestKohuCafeDatabaseConnection {
     @Test
     @DisplayName("Test Database Connection")
     public void testDatabaseConnection() {
-        KohuCafeDatabaseConnection kohuCafeDatabaseConnection = new KohuCafeDatabaseConnection(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeDatabaseConnection.TYPE.BETA);
+        KohuCafeAPI kohuCafeAPI = new KohuCafeAPI(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeAPI.TYPE.BETA);
 
-        Assertions.assertNotNull(kohuCafeDatabaseConnection);
+        Assertions.assertNotNull(kohuCafeAPI);
     }
 
 }

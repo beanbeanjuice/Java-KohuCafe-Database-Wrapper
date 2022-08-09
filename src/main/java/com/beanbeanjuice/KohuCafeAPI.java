@@ -1,5 +1,6 @@
 package com.beanbeanjuice;
 
+import com.beanbeanjuice.tables.avatar.AvatarHandler;
 import com.beanbeanjuice.tables.avatar.AvatarInventoryHandler;
 import com.beanbeanjuice.tables.avatar.AvatarItemHandler;
 import com.beanbeanjuice.tables.ranks.RankHandler;
@@ -20,7 +21,7 @@ import java.util.TimeZone;
  * @author beanbeanjuice
  * @since 1.0.0
  */
-public class KohuCafeDatabaseConnection {
+public class KohuCafeAPI {
 
     /**
      * The {@link TYPE type} of the connection.
@@ -67,26 +68,28 @@ public class KohuCafeDatabaseConnection {
     public AvatarItemHandler AVATAR_ITEMS;
     public RankHandler RANKS;
     public WarnHandler WARNS;
-    public AvatarInventoryHandler AVATARS;
+    public AvatarInventoryHandler AVATAR_INVENTORY;
     public UserRankHandler USER_RANKS;
     public UserHandler USERS;
+    public AvatarHandler AVATARS;
 
     /**
-     * Creates a new {@link KohuCafeDatabaseConnection}.
+     * Creates a new {@link KohuCafeAPI}.
      * @param username The {@link String username} to be used for the {@link java.sql.Connection connection} to the MySQL database.
      * @param password The {@link String password} for the MySQL database.
      * @param type The {@link TYPE type} of connection to be used.
      */
-    public KohuCafeDatabaseConnection(@NotNull String username, @NotNull String password, @NotNull TYPE type) {
+    public KohuCafeAPI(@NotNull String username, @NotNull String password, @NotNull TYPE type) {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         SQLConnection connection = new SQLConnection(type.getURL(), type.getPort(), type.getSchema(), username, password);
 
         AVATAR_ITEMS = new AvatarItemHandler(connection);
         RANKS = new RankHandler(connection);
         WARNS = new WarnHandler(connection);
-        AVATARS = new AvatarInventoryHandler(this, connection);
+        AVATAR_INVENTORY = new AvatarInventoryHandler(this, connection);
         USER_RANKS = new UserRankHandler(this, connection);
         USERS = new UserHandler(this, connection);
+        AVATARS = new AvatarHandler(this, connection);
     }
 
 }

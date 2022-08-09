@@ -1,6 +1,6 @@
 package com.beanbeanjuice.tables.users;
 
-import com.beanbeanjuice.KohuCafeDatabaseConnection;
+import com.beanbeanjuice.KohuCafeAPI;
 import com.beanbeanjuice.utility.exception.user.UserAlreadyExistsException;
 import com.beanbeanjuice.utility.exception.user.UserDoesNotExistException;
 import com.beanbeanjuice.utility.sql.SQLConnection;
@@ -18,15 +18,15 @@ import java.util.HashMap;
 public class UserHandler {
 
     private HashMap<String, User> users = new HashMap<>();
-    private KohuCafeDatabaseConnection api;
+    private KohuCafeAPI api;
     private SQLConnection connection;
 
     /**
      * Create a new {@link UserHandler} object.
-     * @param api The {@link KohuCafeDatabaseConnection api connection}.
+     * @param api The {@link KohuCafeAPI api connection}.
      * @param connection The {@link SQLConnection database connection}.
      */
-    public UserHandler(@NotNull KohuCafeDatabaseConnection api, @NotNull SQLConnection connection) {
+    public UserHandler(@NotNull KohuCafeAPI api, @NotNull SQLConnection connection) {
         this.api = api;
         this.connection = connection;
         cache();

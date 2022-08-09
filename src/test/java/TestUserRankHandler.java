@@ -1,4 +1,4 @@
-import com.beanbeanjuice.KohuCafeDatabaseConnection;
+import com.beanbeanjuice.KohuCafeAPI;
 import com.beanbeanjuice.utility.exception.rank.RankDoesNotExistException;
 import com.beanbeanjuice.utility.exception.user.UserAlreadyHasRankException;
 import com.beanbeanjuice.utility.exception.user.UserDoesNotExistException;
@@ -19,28 +19,28 @@ public class TestUserRankHandler {
     @Test
     @DisplayName("Test User Rank Handler")
     public void testUserRankHandler() {
-        KohuCafeDatabaseConnection kohuCafeDatabaseConnection = new KohuCafeDatabaseConnection(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeDatabaseConnection.TYPE.BETA);
-        Assertions.assertNotNull(kohuCafeDatabaseConnection.USER_RANKS.getUserRanks(OWNER));
-        Assertions.assertEquals("Programmer", kohuCafeDatabaseConnection.USER_RANKS.getUserRanks(OWNER).get(0).getName());
-        Assertions.assertEquals("A rank given to programmers on the server.", kohuCafeDatabaseConnection.USER_RANKS.getUserRanks(OWNER).get(0).getDescription());
-        Assertions.assertEquals("1005742939311452200", kohuCafeDatabaseConnection.USER_RANKS.getUserRanks(OWNER).get(0).getRoleID());
+        KohuCafeAPI kohuCafeAPI = new KohuCafeAPI(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeAPI.TYPE.BETA);
+        Assertions.assertNotNull(kohuCafeAPI.USER_RANKS.getUserRanks(OWNER));
+        Assertions.assertEquals("Programmer", kohuCafeAPI.USER_RANKS.getUserRanks(OWNER).get(0).getName());
+        Assertions.assertEquals("A rank given to programmers on the server.", kohuCafeAPI.USER_RANKS.getUserRanks(OWNER).get(0).getDescription());
+        Assertions.assertEquals("1005742939311452200", kohuCafeAPI.USER_RANKS.getUserRanks(OWNER).get(0).getRoleID());
     }
 
     @Test
     @DisplayName("Test User Rank Handler Exceptions")
     public void testUserRankHandlerExceptions() {
-        KohuCafeDatabaseConnection kohuCafeDatabaseConnection = new KohuCafeDatabaseConnection(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeDatabaseConnection.TYPE.BETA);
+        KohuCafeAPI kohuCafeAPI = new KohuCafeAPI(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeAPI.TYPE.BETA);
 
-        Assertions.assertThrows(UserDoesNotHaveRanksException.class, () -> kohuCafeDatabaseConnection.USER_RANKS.getUserRankIDs("0"));
-        Assertions.assertThrows(UserDoesNotHaveRanksException.class, () -> kohuCafeDatabaseConnection.USER_RANKS.getUserRanks("0"));
+        Assertions.assertThrows(UserDoesNotHaveRanksException.class, () -> kohuCafeAPI.USER_RANKS.getUserRankIDs("0"));
+        Assertions.assertThrows(UserDoesNotHaveRanksException.class, () -> kohuCafeAPI.USER_RANKS.getUserRanks("0"));
 
-        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeDatabaseConnection.USER_RANKS.addRankToUser("0", 0));
-        Assertions.assertThrows(UserDoesNotExistException.class, () -> kohuCafeDatabaseConnection.USER_RANKS.addRankToUser("0", 1));
-        Assertions.assertThrows(UserAlreadyHasRankException.class, () -> kohuCafeDatabaseConnection.USER_RANKS.addRankToUser(OWNER, 1));
+        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeAPI.USER_RANKS.addRankToUser("0", 0));
+        Assertions.assertThrows(UserDoesNotExistException.class, () -> kohuCafeAPI.USER_RANKS.addRankToUser("0", 1));
+        Assertions.assertThrows(UserAlreadyHasRankException.class, () -> kohuCafeAPI.USER_RANKS.addRankToUser(OWNER, 1));
 
-        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeDatabaseConnection.USER_RANKS.removeRankFromUser("0", 0));
-        Assertions.assertThrows(UserDoesNotExistException.class, () -> kohuCafeDatabaseConnection.USER_RANKS.removeRankFromUser("0", 1));
-        Assertions.assertThrows(UserDoesNotHaveRankException.class, () -> kohuCafeDatabaseConnection.USER_RANKS.removeRankFromUser(OWNER, 2));
+        Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeAPI.USER_RANKS.removeRankFromUser("0", 0));
+        Assertions.assertThrows(UserDoesNotExistException.class, () -> kohuCafeAPI.USER_RANKS.removeRankFromUser("0", 1));
+        Assertions.assertThrows(UserDoesNotHaveRankException.class, () -> kohuCafeAPI.USER_RANKS.removeRankFromUser(OWNER, 2));
     }
 
 }

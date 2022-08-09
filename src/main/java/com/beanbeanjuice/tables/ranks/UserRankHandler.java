@@ -1,6 +1,6 @@
 package com.beanbeanjuice.tables.ranks;
 
-import com.beanbeanjuice.KohuCafeDatabaseConnection;
+import com.beanbeanjuice.KohuCafeAPI;
 import com.beanbeanjuice.utility.exception.rank.RankDoesNotExistException;
 import com.beanbeanjuice.utility.exception.user.UserAlreadyHasRankException;
 import com.beanbeanjuice.utility.exception.user.UserDoesNotExistException;
@@ -24,15 +24,15 @@ public class UserRankHandler {
 
     private HashMap<String, ArrayList<Integer>> userRankIDs = new HashMap<>();
     private HashMap<String, ArrayList<Rank>> userRanks = new HashMap<>();
-    private KohuCafeDatabaseConnection api;
+    private KohuCafeAPI api;
     private SQLConnection connection;
 
     /**
      * Creates a new {@link UserRankHandler} object.
-     * @param api The {@link KohuCafeDatabaseConnection api connection}.
+     * @param api The {@link KohuCafeAPI api connection}.
      * @param connection The {@link SQLConnection database connection}.
      */
-    public UserRankHandler(@NotNull KohuCafeDatabaseConnection api, @NotNull SQLConnection connection) {
+    public UserRankHandler(@NotNull KohuCafeAPI api, @NotNull SQLConnection connection) {
         this.api = api;
         this.connection = connection;
         cache();
