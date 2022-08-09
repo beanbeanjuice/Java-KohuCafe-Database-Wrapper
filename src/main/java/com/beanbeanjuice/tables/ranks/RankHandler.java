@@ -57,11 +57,11 @@ public class RankHandler {
      */
     @NotNull
     public Rank getRank(@NotNull Integer rankID) throws RankDoesNotExistException {
-        rankID--;
-        if (rankID >= ranks.size() || rankID < 0)
+        int randArrayIndex = rankID - 1;
+        if (!rankExists(rankID))
             throw new RankDoesNotExistException(rankID);
 
-        return ranks.get(rankID);
+        return ranks.get(randArrayIndex);
     }
 
     /**
@@ -102,19 +102,20 @@ public class RankHandler {
      * @param rankID The {@link Integer ID} of the {@link Rank}.
      * @param roleID The {@link String new role ID} of the {@link Rank}.
      * @return True, if the {@link String role ID} was updated successfully.
+     * @throws RankDoesNotExistException Thrown if the {@link Rank} does not exist.
      */
     @NotNull
-    public Boolean setRoleID(@NotNull Integer rankID, @NotNull String roleID) {
-        rankID--;  // Index of arraylist
+    public Boolean setRoleID(@NotNull Integer rankID, @NotNull String roleID) throws RankDoesNotExistException {
+        int rankArrayIndex = rankID - 1;  // Index of arraylist
 
-        if (rankID >= ranks.size() || rankID < 0)
+        if (!rankExists(rankID))
             throw new RankDoesNotExistException(rankID);
 
         String query = "UPDATE ranks SET role_id = (?) WHERE id = (?)";
         String[] values = new String[]{roleID, rankID.toString()};
 
         if (connection.executeQuery(query, values)) {
-            ranks.get(rankID).setRoleID(roleID);
+            ranks.get(rankArrayIndex).setRoleID(roleID);
             return true;
         }
         return false;
@@ -125,19 +126,20 @@ public class RankHandler {
      * @param rankID The {@link Integer ID} of the {@link Rank}.
      * @param name The {@link String new name} of the {@link Rank}.
      * @return True, if the {@link String name} was updated successfully.
+     * @throws RankDoesNotExistException Thrown if the {@link Rank} does not exist.
      */
     @NotNull
-    public Boolean setName(@NotNull Integer rankID, @NotNull String name) {
-        rankID--;  // Index of arraylist
+    public Boolean setName(@NotNull Integer rankID, @NotNull String name) throws RankDoesNotExistException {
+        int rankArrayIndex = rankID - 1;  // Index of arraylist
 
-        if (rankID >= ranks.size() || rankID < 0)
+        if (!rankExists(rankID))
             throw new RankDoesNotExistException(rankID);
 
         String query = "UPDATE ranks SET name = (?) WHERE id = (?)";
         String[] values = new String[]{name, rankID.toString()};
 
         if (connection.executeQuery(query, values)) {
-            ranks.get(rankID).setName(name);
+            ranks.get(rankArrayIndex).setName(name);
             return true;
         }
         return false;
@@ -148,22 +150,29 @@ public class RankHandler {
      * @param rankID The {@link Integer ID} of the {@link Rank}.
      * @param description The {@link String new description} of the {@link Rank}.
      * @return True, if the {@link String description} was updated successfully.
+     * @throws RankDoesNotExistException Thrown if the {@link Rank} does not exist.
      */
     @NotNull
-    public Boolean setDescription(@NotNull Integer rankID, @NotNull String description) {
-        rankID--;  // Index of arraylist
+    public Boolean setDescription(@NotNull Integer rankID, @NotNull String description) throws RankDoesNotExistException {
+        int rankArrayIndex = rankID - 1;  // Index of arraylist
 
-        if (rankID >= ranks.size() || rankID < 0)
+        if (!rankExists(rankID))
             throw new RankDoesNotExistException(rankID);
 
         String query = "UPDATE ranks SET description = (?) WHERE id = (?)";
         String[] values = new String[]{description, rankID.toString()};
 
         if (connection.executeQuery(query, values)) {
-            ranks.get(rankID).setDescription(description);
+            ranks.get(rankArrayIndex).setDescription(description);
             return true;
         }
         return false;
+    }
+
+    @NotNull
+    public Boolean rankExists(@NotNull Integer rankID) {
+        int rankArrayIndex = rankID - 1;
+        return !(rankArrayIndex >= ranks.size() || rankArrayIndex < 0);
     }
 
 }

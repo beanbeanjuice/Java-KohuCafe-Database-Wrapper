@@ -2,6 +2,8 @@ package com.beanbeanjuice.tables.warns;
 
 import com.beanbeanjuice.cafeapi.utility.Time;
 import com.beanbeanjuice.utility.exception.WarnDoesNotExistException;
+import com.beanbeanjuice.utility.exception.warn.UserDoesNotHaveActiveWarnsException;
+import com.beanbeanjuice.utility.exception.warn.UserDoesNotHaveWarnsException;
 import com.beanbeanjuice.utility.sql.SQLConnection;
 import com.beanbeanjuice.utility.sql.SQLRow;
 import org.jetbrains.annotations.NotNull;
@@ -49,9 +51,9 @@ public class WarnHandler {
     }
 
     @NotNull
-    public ArrayList<Warn> getActiveUserWarns(@NotNull String userID) {
+    public ArrayList<Warn> getActiveUserWarns(@NotNull String userID) throws UserDoesNotHaveActiveWarnsException {
         if (!warns.containsKey(userID))
-            return new ArrayList<>();
+            throw new UserDoesNotHaveActiveWarnsException(userID);
 
         ArrayList<Warn> activeWarns = new ArrayList<>();
         for (Warn warn : warns.get(userID))
@@ -62,9 +64,9 @@ public class WarnHandler {
     }
 
     @NotNull
-    public ArrayList<Warn> getAllUserWarns(@NotNull String userID) {
+    public ArrayList<Warn> getAllUserWarns(@NotNull String userID) throws UserDoesNotHaveWarnsException {
         if (!warns.containsKey(userID))
-            return new ArrayList<>();
+            throw new UserDoesNotHaveWarnsException(userID);
 
         return warns.get(userID);
     }
@@ -76,7 +78,7 @@ public class WarnHandler {
                 if (warn.getWarnID().equals(warnID))
                     return warn;
         }
-        throw new WarnDoesNotExistException();
+        throw new WarnDoesNotExistException(warnID);
     }
 
     @NotNull
@@ -125,8 +127,21 @@ public class WarnHandler {
     }
 
     @NotNull
-    public Boolean updateWarnActiveStatus(@NotNull Integer warnID, @NotNull Boolean isActive) {
+    public Boolean warnExists(@NotNull Integer warnID) {
+        for (Map.Entry<String, ArrayList<Warn>> userWarns : warns.entrySet())
+            for (Warn warn : userWarns.getValue())
+                if (warn.getWarnID().equals(warnID))
+                    return true;
+        return false;
+    }
+
+    @NotNull
+    public Boolean updateWarnActiveStatus(@NotNull Integer warnID, @NotNull Boolean isActive) throws WarnDoesNotExistException {
         String query = "UPDATE warns SET active = (?) WHERE id = (?)";
+
+        // Check if the warn exists.
+        if (!warnExists(warnID))
+            throw new WarnDoesNotExistException(warnID);
 
         String[] values = new String[]{
                 String.valueOf(isActive ? 1 : 0),
