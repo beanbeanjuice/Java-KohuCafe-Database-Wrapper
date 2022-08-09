@@ -47,7 +47,7 @@ public class Avatar {
      */
     @NotNull
     public Integer getCurrentHealth() {
-        return currentHealth;  // TODO: In the future calculate this differently.
+        return currentHealth;
     }
 
     /**

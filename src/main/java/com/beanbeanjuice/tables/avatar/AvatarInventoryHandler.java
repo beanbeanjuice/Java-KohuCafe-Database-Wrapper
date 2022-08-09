@@ -45,7 +45,7 @@ public class AvatarInventoryHandler {
             if (!userItems.containsKey(userID))
                 userItems.put(userID, new ArrayList<>());
 
-            userItems.get(userID).add(api.AVATAR_ITEMS.getItem(itemID));  // TODO: Test if this updates for all items.
+            userItems.get(userID).add(api.AVATAR_ITEMS.getItem(itemID));
         }
     }
 
