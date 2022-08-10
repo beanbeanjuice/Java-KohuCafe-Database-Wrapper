@@ -15,6 +15,7 @@ import java.util.HashMap;
  *
  * @author beanbeanjuice
  * @since 1.0.0
+ * @version 1.1.0
  */
 public class AvatarHandler {
 
@@ -77,11 +78,12 @@ public class AvatarHandler {
     @NotNull
     private Avatar getAvatarFromRow(@NotNull SQLRow row) {
         String userID = row.getAsString("user_id");
+        Integer experience = row.getAsInteger("experience");
         Integer maxHealth = row.getAsInteger("max_health");
         Integer strength = row.getAsInteger("strength");
         Integer intelligence = row.getAsInteger("intelligence");
 
-        return new Avatar(maxHealth, strength, intelligence, api.AVATAR_INVENTORY.getAvatarItems(userID));
+        return new Avatar(maxHealth, experience, strength, intelligence, api.AVATAR_INVENTORY.getAvatarItems(userID));
     }
 
     /**
@@ -96,6 +98,29 @@ public class AvatarHandler {
             throw new AvatarDoesNotExistException(userID);
 
         return avatars.get(userID);
+    }
+
+    /**
+     * Add experience to an {@link Avatar} in the database.
+     * @param userID The {@link String user ID}.
+     * @param experience The {@link Integer experience} to add.
+     * @return True, if the {@link Integer experience} was added successfully.
+     * @throws AvatarDoesNotExistException Thrown if the {@link Avatar} does not exist.
+     */
+    @NotNull
+    public Boolean addExperience(@NotNull String userID, @NotNull Integer experience) throws AvatarDoesNotExistException {
+        if (!avatars.containsKey(userID))
+            throw new AvatarDoesNotExistException(userID);
+
+        String query = "UPDATE avatar_statistics SET experience = experience + (?) WHERE user_id = (?)";
+        String[] values = new String[]{experience.toString(), userID};
+
+        if (connection.executeQuery(query, values)) {
+            // Update locally.
+            avatars.get(userID).addExperience(experience);
+            return true;
+        }
+        return false;
     }
 
     /**

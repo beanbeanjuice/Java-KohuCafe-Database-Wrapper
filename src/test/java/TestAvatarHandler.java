@@ -14,6 +14,7 @@ public class TestAvatarHandler {
     private static final String MYSQL_PASSWORD = DOT_ENV.get("MYSQL_PASSWORD");
     private static final String OWNER = "690927484199370753";
     private static final String FRIEND = "281325818754498561";
+    private static final String FRIEND_2 = "421405302446096384";
 
     @Test
     @DisplayName("Test Avatar Handler")
@@ -39,6 +40,24 @@ public class TestAvatarHandler {
                 avatar.getIntelligence()
         ));
         Assertions.assertEquals(100, kohuCafeAPI.AVATARS.getAvatar(FRIEND).getMaxHealth());
+
+        Assertions.assertEquals(0, kohuCafeAPI.AVATARS.getAvatar(OWNER).getLevel());
+        Assertions.assertEquals(99, kohuCafeAPI.AVATARS.getAvatar(OWNER).getExperience());
+        Assertions.assertEquals(1, kohuCafeAPI.AVATARS.getAvatar(OWNER).getExperienceToNextLevel());
+
+        Assertions.assertEquals(1, kohuCafeAPI.AVATARS.getAvatar(FRIEND).getLevel());
+        Assertions.assertEquals(998, kohuCafeAPI.AVATARS.getAvatar(FRIEND).getExperience());
+        Assertions.assertEquals(2, kohuCafeAPI.AVATARS.getAvatar(FRIEND).getExperienceToNextLevel());
+
+        int currentExperience = kohuCafeAPI.AVATARS.getAvatar(FRIEND_2).getExperience();
+        int currentLevel = kohuCafeAPI.AVATARS.getAvatar(FRIEND_2).getLevel();
+        int experienceToNextLevel = kohuCafeAPI.AVATARS.getAvatar(FRIEND_2).getExperienceToNextLevel();
+
+        Assertions.assertTrue(kohuCafeAPI.AVATARS.addExperience(FRIEND_2, experienceToNextLevel + 1));
+        Assertions.assertEquals(currentExperience + experienceToNextLevel + 1, kohuCafeAPI.AVATARS.getAvatar(FRIEND_2).getExperience());
+        Assertions.assertEquals(currentLevel + 1, kohuCafeAPI.AVATARS.getAvatar(FRIEND_2).getLevel());
+        Assertions.assertTrue(kohuCafeAPI.AVATARS.addExperience(FRIEND_2, (experienceToNextLevel + 1) * -1));
+        Assertions.assertEquals(currentExperience, kohuCafeAPI.AVATARS.getAvatar(FRIEND_2).getExperience());
     }
 
     @Test
@@ -48,6 +67,8 @@ public class TestAvatarHandler {
 
         Assertions.assertThrows(AvatarAlreadyExistsException.class, () -> kohuCafeAPI.AVATARS.addAvatar(OWNER));
         Assertions.assertThrows(AvatarDoesNotExistException.class, () -> kohuCafeAPI.AVATARS.updateAvatar("0", 10000, 1000, 1000));
+        Assertions.assertThrows(AvatarDoesNotExistException.class, () -> kohuCafeAPI.AVATARS.addExperience("0", 500));
+
     }
 
 }

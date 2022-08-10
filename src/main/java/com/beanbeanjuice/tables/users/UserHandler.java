@@ -37,10 +37,11 @@ public class UserHandler {
 
         for (SQLRow column : connection.getResultSet(query)) {
             String userID = column.getAsString("user_id");
+            Integer experience = column.getAsInteger("experience");
             Double balance = column.getAsDouble("balance");
             Double multiplier = column.getAsDouble("multiplier");
 
-            users.put(userID, new User(userID, balance, multiplier, api.USER_RANKS.getUserRanks(userID)));
+            users.put(userID, new User(userID, experience, balance, multiplier, api.USER_RANKS.getUserRanks(userID)));
         }
     }
 
@@ -86,10 +87,27 @@ public class UserHandler {
         String[] values = new String[]{userID};
 
         SQLRow column = connection.getResultSet(query, values).first();
+        Integer experience = column.getAsInteger("experience");
         Double balance = column.getAsDouble("balance");
         Double multiplier = column.getAsDouble("multiplier");
 
-        return new User(userID, balance, multiplier, api.USER_RANKS.getUserRanks(userID));
+        return new User(userID, experience, balance, multiplier, api.USER_RANKS.getUserRanks(userID));
+    }
+
+    @NotNull
+    public Boolean addExperience(@NotNull String userID, @NotNull Integer experience) throws UserDoesNotExistException {
+        if (!users.containsKey(userID))
+            throw new UserDoesNotExistException(userID);
+
+        String query = "UPDATE users SET experience = experience + (?) WHERE user_id = (?)";
+        String[] values = new String[]{experience.toString(), userID};
+
+        if (connection.executeQuery(query, values)) {
+            // Update locally.
+            users.get(userID).addExperience(experience);
+            return true;
+        }
+        return false;
     }
 
     /**

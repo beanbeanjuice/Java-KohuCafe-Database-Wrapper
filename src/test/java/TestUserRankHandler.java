@@ -3,7 +3,6 @@ import com.beanbeanjuice.utility.exception.rank.RankDoesNotExistException;
 import com.beanbeanjuice.utility.exception.user.UserAlreadyHasRankException;
 import com.beanbeanjuice.utility.exception.user.UserDoesNotExistException;
 import com.beanbeanjuice.utility.exception.user.UserDoesNotHaveRankException;
-import com.beanbeanjuice.utility.exception.user.UserDoesNotHaveRanksException;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -31,8 +30,8 @@ public class TestUserRankHandler {
     public void testUserRankHandlerExceptions() {
         KohuCafeAPI kohuCafeAPI = new KohuCafeAPI(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeAPI.TYPE.BETA);
 
-        Assertions.assertThrows(UserDoesNotHaveRanksException.class, () -> kohuCafeAPI.USER_RANKS.getUserRankIDs("0"));
-        Assertions.assertThrows(UserDoesNotHaveRanksException.class, () -> kohuCafeAPI.USER_RANKS.getUserRanks("0"));
+        Assertions.assertDoesNotThrow(() -> kohuCafeAPI.USER_RANKS.getUserRankIDs("0"));
+        Assertions.assertDoesNotThrow(() -> kohuCafeAPI.USER_RANKS.getUserRanks("0"));
 
         Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeAPI.USER_RANKS.addRankToUser("0", 0));
         Assertions.assertThrows(UserDoesNotExistException.class, () -> kohuCafeAPI.USER_RANKS.addRankToUser("0", 1));

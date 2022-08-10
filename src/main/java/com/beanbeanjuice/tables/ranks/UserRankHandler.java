@@ -5,7 +5,6 @@ import com.beanbeanjuice.utility.exception.rank.RankDoesNotExistException;
 import com.beanbeanjuice.utility.exception.user.UserAlreadyHasRankException;
 import com.beanbeanjuice.utility.exception.user.UserDoesNotExistException;
 import com.beanbeanjuice.utility.exception.user.UserDoesNotHaveRankException;
-import com.beanbeanjuice.utility.exception.user.UserDoesNotHaveRanksException;
 import com.beanbeanjuice.utility.sql.SQLConnection;
 import com.beanbeanjuice.utility.sql.SQLRow;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +18,7 @@ import java.util.Objects;
  *
  * @author beanbeanjuice
  * @since 1.0.0
+ * @version 1.1.0
  */
 public class UserRankHandler {
 
@@ -66,12 +66,13 @@ public class UserRankHandler {
      * Get an {@link ArrayList} containing all {@link Integer rank IDs} for a user.
      * @param userID The {@link String user ID} to check.
      * @return An {@link ArrayList} of {@link Integer rank IDs} for that user.
-     * @throws UserDoesNotHaveRankException Thrown if the user does not have any {@link Rank ranks}.
      */
     @NotNull
-    public ArrayList<Integer> getUserRankIDs(@NotNull String userID) throws UserDoesNotHaveRankException {
-        if (!userRankIDs.containsKey(userID))
-            throw new UserDoesNotHaveRanksException(userID);
+    public ArrayList<Integer> getUserRankIDs(@NotNull String userID) {
+        if (!userRankIDs.containsKey(userID)) {
+            userRankIDs.put(userID, new ArrayList<>());
+            userRanks.put(userID, new ArrayList<>());
+        }
 
         return userRankIDs.get(userID);
     }
@@ -80,12 +81,13 @@ public class UserRankHandler {
      * Get an {@link ArrayList} containing all {@link Rank ranks} for a user.
      * @param userID The {@link String user ID} to check.
      * @return An {@link ArrayList} of {@link Rank ranks} for that user.
-     * @throws UserDoesNotHaveRankException Thrown if the user does not have any {@link Rank ranks}.
      */
     @NotNull
-    public ArrayList<Rank> getUserRanks(@NotNull String userID) throws UserDoesNotHaveRankException {
-        if (!userRanks.containsKey(userID))
-            throw new UserDoesNotHaveRanksException(userID);
+    public ArrayList<Rank> getUserRanks(@NotNull String userID) {
+        if (!userRanks.containsKey(userID)) {
+            userRankIDs.put(userID, new ArrayList<>());
+            userRanks.put(userID, new ArrayList<>());
+        }
 
         return userRanks.get(userID);
     }
