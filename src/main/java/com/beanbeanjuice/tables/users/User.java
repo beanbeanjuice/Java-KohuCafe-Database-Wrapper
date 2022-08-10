@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class User {
 
     private final String USER_ID;
+    private int experience;
     private double balance;
     private double multiplier;
     private ArrayList<Rank> ranks;
@@ -21,12 +22,15 @@ public class User {
     /**
      * Creates a new {@link User} object.
      * @param userID The {@link String user ID} for that {@link User}.
+     * @param experience The {@link Integer experience} for that {@link User}.
      * @param balance The {@link Double balance} for that {@link User}.
      * @param multiplier The {@link Double multiplier} for that {@link User}.
      * @param ranks The {@link ArrayList} of {@link Rank ranks} for that {@link User}.
      */
-    public User(@NotNull String userID, @NotNull Double balance, @NotNull Double multiplier, @NotNull ArrayList<Rank> ranks) {
+    public User(@NotNull String userID, @NotNull Integer experience, @NotNull Double balance,
+                @NotNull Double multiplier, @NotNull ArrayList<Rank> ranks) {
         this.USER_ID = userID;
+        this.experience = experience;
         this.balance = balance;
         this.multiplier = multiplier;
         this.ranks = ranks;
@@ -38,6 +42,34 @@ public class User {
     @NotNull
     public String getUserID() {
         return USER_ID;
+    }
+
+    @NotNull
+    public Integer getExperience() {
+        return experience;
+    }
+
+    @NotNull
+    public Integer getLevel() {
+        // 100 Experience - Level 1
+        // 1000 Experience - Level 2
+        // 10000 Experience - Level 3
+        int levelExperience = 100;
+        int currentLevel = 0;
+        while (experience > levelExperience) {
+            currentLevel++;
+            levelExperience *= 10;
+        }
+        return currentLevel;
+    }
+
+    @NotNull
+    public Integer getExperienceToNextLevel() {
+        int level = getLevel();
+        int levelExperience = 100;
+        for (int i = 0; i < level; i++)
+            levelExperience *= 10;
+        return levelExperience - experience;
     }
 
     /**
@@ -62,6 +94,10 @@ public class User {
     @NotNull
     public ArrayList<Rank> getRanks() {
         return ranks;
+    }
+
+    protected void addExperience(@NotNull Integer experience) {
+        this.experience += experience;
     }
 
     /**

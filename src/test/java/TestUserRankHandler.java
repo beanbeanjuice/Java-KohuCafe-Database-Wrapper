@@ -31,8 +31,8 @@ public class TestUserRankHandler {
     public void testUserRankHandlerExceptions() {
         KohuCafeAPI kohuCafeAPI = new KohuCafeAPI(MYSQL_USERNAME, MYSQL_PASSWORD, KohuCafeAPI.TYPE.BETA);
 
-        Assertions.assertThrows(UserDoesNotHaveRanksException.class, () -> kohuCafeAPI.USER_RANKS.getUserRankIDs("0"));
-        Assertions.assertThrows(UserDoesNotHaveRanksException.class, () -> kohuCafeAPI.USER_RANKS.getUserRanks("0"));
+        Assertions.assertDoesNotThrow(() -> kohuCafeAPI.USER_RANKS.getUserRankIDs("0"));
+        Assertions.assertDoesNotThrow(() -> kohuCafeAPI.USER_RANKS.getUserRanks("0"));
 
         Assertions.assertThrows(RankDoesNotExistException.class, () -> kohuCafeAPI.USER_RANKS.addRankToUser("0", 0));
         Assertions.assertThrows(UserDoesNotExistException.class, () -> kohuCafeAPI.USER_RANKS.addRankToUser("0", 1));

@@ -3,6 +3,7 @@ package com.beanbeanjuice.tables.avatar;
 import com.beanbeanjuice.KohuCafeAPI;
 import com.beanbeanjuice.utility.exception.avatar.AvatarAlreadyExistsException;
 import com.beanbeanjuice.utility.exception.avatar.AvatarDoesNotExistException;
+import com.beanbeanjuice.utility.exception.user.UserDoesNotExistException;
 import com.beanbeanjuice.utility.sql.SQLConnection;
 import com.beanbeanjuice.utility.sql.SQLResult;
 import com.beanbeanjuice.utility.sql.SQLRow;
@@ -77,11 +78,12 @@ public class AvatarHandler {
     @NotNull
     private Avatar getAvatarFromRow(@NotNull SQLRow row) {
         String userID = row.getAsString("user_id");
+        Integer experience = row.getAsInteger("experience");
         Integer maxHealth = row.getAsInteger("max_health");
         Integer strength = row.getAsInteger("strength");
         Integer intelligence = row.getAsInteger("intelligence");
 
-        return new Avatar(maxHealth, strength, intelligence, api.AVATAR_INVENTORY.getAvatarItems(userID));
+        return new Avatar(maxHealth, experience, strength, intelligence, api.AVATAR_INVENTORY.getAvatarItems(userID));
     }
 
     /**
@@ -96,6 +98,22 @@ public class AvatarHandler {
             throw new AvatarDoesNotExistException(userID);
 
         return avatars.get(userID);
+    }
+
+    @NotNull
+    public Boolean addExperience(@NotNull String userID, @NotNull Integer experience) throws AvatarDoesNotExistException {
+        if (!avatars.containsKey(userID))
+            throw new AvatarDoesNotExistException(userID);
+
+        String query = "UPDATE avatar_statistics SET experience = experience + (?) WHERE user_id = (?)";
+        String[] values = new String[]{experience.toString(), userID};
+
+        if (connection.executeQuery(query, values)) {
+            // Update locally.
+            avatars.get(userID).addExperience(experience);
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -66,12 +66,13 @@ public class UserRankHandler {
      * Get an {@link ArrayList} containing all {@link Integer rank IDs} for a user.
      * @param userID The {@link String user ID} to check.
      * @return An {@link ArrayList} of {@link Integer rank IDs} for that user.
-     * @throws UserDoesNotHaveRankException Thrown if the user does not have any {@link Rank ranks}.
      */
     @NotNull
-    public ArrayList<Integer> getUserRankIDs(@NotNull String userID) throws UserDoesNotHaveRankException {
-        if (!userRankIDs.containsKey(userID))
-            throw new UserDoesNotHaveRanksException(userID);
+    public ArrayList<Integer> getUserRankIDs(@NotNull String userID) {
+        if (!userRankIDs.containsKey(userID)) {
+            userRankIDs.put(userID, new ArrayList<>());
+            userRanks.put(userID, new ArrayList<>());
+        }
 
         return userRankIDs.get(userID);
     }
@@ -80,12 +81,13 @@ public class UserRankHandler {
      * Get an {@link ArrayList} containing all {@link Rank ranks} for a user.
      * @param userID The {@link String user ID} to check.
      * @return An {@link ArrayList} of {@link Rank ranks} for that user.
-     * @throws UserDoesNotHaveRankException Thrown if the user does not have any {@link Rank ranks}.
      */
     @NotNull
-    public ArrayList<Rank> getUserRanks(@NotNull String userID) throws UserDoesNotHaveRankException {
-        if (!userRanks.containsKey(userID))
-            throw new UserDoesNotHaveRanksException(userID);
+    public ArrayList<Rank> getUserRanks(@NotNull String userID) {
+        if (!userRanks.containsKey(userID)) {
+            userRankIDs.put(userID, new ArrayList<>());
+            userRanks.put(userID, new ArrayList<>());
+        }
 
         return userRanks.get(userID);
     }

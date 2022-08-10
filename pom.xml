@@ -14,7 +14,7 @@
         <maven.compiler.target>16</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <version.number>1.0.0</version.number>
+        <version.number>1.1.0</version.number>
     </properties>
 
     <profiles>
