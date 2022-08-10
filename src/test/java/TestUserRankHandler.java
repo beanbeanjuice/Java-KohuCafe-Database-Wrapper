@@ -3,7 +3,6 @@ import com.beanbeanjuice.utility.exception.rank.RankDoesNotExistException;
 import com.beanbeanjuice.utility.exception.user.UserAlreadyHasRankException;
 import com.beanbeanjuice.utility.exception.user.UserDoesNotExistException;
 import com.beanbeanjuice.utility.exception.user.UserDoesNotHaveRankException;
-import com.beanbeanjuice.utility.exception.user.UserDoesNotHaveRanksException;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

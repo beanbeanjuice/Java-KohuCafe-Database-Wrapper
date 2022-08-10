@@ -5,7 +5,6 @@ import com.beanbeanjuice.utility.exception.rank.RankDoesNotExistException;
 import com.beanbeanjuice.utility.exception.user.UserAlreadyHasRankException;
 import com.beanbeanjuice.utility.exception.user.UserDoesNotExistException;
 import com.beanbeanjuice.utility.exception.user.UserDoesNotHaveRankException;
-import com.beanbeanjuice.utility.exception.user.UserDoesNotHaveRanksException;
 import com.beanbeanjuice.utility.sql.SQLConnection;
 import com.beanbeanjuice.utility.sql.SQLRow;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +18,7 @@ import java.util.Objects;
  *
  * @author beanbeanjuice
  * @since 1.0.0
+ * @version 1.1.0
  */
 public class UserRankHandler {
 

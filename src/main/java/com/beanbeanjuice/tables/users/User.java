@@ -10,6 +10,7 @@ import java.util.ArrayList;
  *
  * @author beanbeanjuice
  * @since 1.0.0
+ * @version 1.1.0
  */
 public class User {
 
@@ -44,11 +45,17 @@ public class User {
         return USER_ID;
     }
 
+    /**
+     * @return The current total {@link Integer experience} for the {@link User}.
+     */
     @NotNull
     public Integer getExperience() {
         return experience;
     }
 
+    /**
+     * @return The current {@link Integer level} for the {@link User}.
+     */
     @NotNull
     public Integer getLevel() {
         // 100 Experience - Level 1
@@ -63,6 +70,9 @@ public class User {
         return currentLevel;
     }
 
+    /**
+     * @return The total {@link Integer experience} to the next level.
+     */
     @NotNull
     public Integer getExperienceToNextLevel() {
         int level = getLevel();
@@ -96,6 +106,10 @@ public class User {
         return ranks;
     }
 
+    /**
+     * Add {@link Integer experience} to the {@link User}.
+     * @param experience The {@link Integer experience} to add.
+     */
     protected void addExperience(@NotNull Integer experience) {
         this.experience += experience;
     }

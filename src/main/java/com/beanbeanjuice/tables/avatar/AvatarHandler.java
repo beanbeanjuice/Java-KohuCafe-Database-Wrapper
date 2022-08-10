@@ -3,7 +3,6 @@ package com.beanbeanjuice.tables.avatar;
 import com.beanbeanjuice.KohuCafeAPI;
 import com.beanbeanjuice.utility.exception.avatar.AvatarAlreadyExistsException;
 import com.beanbeanjuice.utility.exception.avatar.AvatarDoesNotExistException;
-import com.beanbeanjuice.utility.exception.user.UserDoesNotExistException;
 import com.beanbeanjuice.utility.sql.SQLConnection;
 import com.beanbeanjuice.utility.sql.SQLResult;
 import com.beanbeanjuice.utility.sql.SQLRow;
@@ -16,6 +15,7 @@ import java.util.HashMap;
  *
  * @author beanbeanjuice
  * @since 1.0.0
+ * @version 1.1.0
  */
 public class AvatarHandler {
 
@@ -100,6 +100,13 @@ public class AvatarHandler {
         return avatars.get(userID);
     }
 
+    /**
+     * Add experience to an {@link Avatar} in the database.
+     * @param userID The {@link String user ID}.
+     * @param experience The {@link Integer experience} to add.
+     * @return True, if the {@link Integer experience} was added successfully.
+     * @throws AvatarDoesNotExistException Thrown if the {@link Avatar} does not exist.
+     */
     @NotNull
     public Boolean addExperience(@NotNull String userID, @NotNull Integer experience) throws AvatarDoesNotExistException {
         if (!avatars.containsKey(userID))
